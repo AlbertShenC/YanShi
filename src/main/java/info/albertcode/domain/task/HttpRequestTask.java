@@ -10,19 +10,7 @@ import java.util.List;
  */
 
 public class HttpRequestTask extends Task{
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setInputEvent(Event inputEvent) {
-        this.inputEvent = inputEvent;
-    }
-
-    public void setOutputEvent(Event outputEvent) {
-        this.outputEvent = outputEvent;
-    }
-
-    public void setNextEvents(List<Event> nextEvents) {
-        this.nextEvents = nextEvents;
+    public HttpRequestTask() {
+        this.type = "HttpRequest";
     }
 }

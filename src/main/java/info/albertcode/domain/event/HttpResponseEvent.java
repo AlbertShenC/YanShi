@@ -1,7 +1,5 @@
 package info.albertcode.domain.event;
 
-import info.albertcode.utils.enums.EEventType;
-
 /**
  * @Description: http 响应事件，overview = httpVersion + " " + statusCode + " " + reasonPhrase
  * @Author: Albert Shen
@@ -13,7 +11,7 @@ public class HttpResponseEvent extends Event{
     private String reasonPhrase; // 服务器返回的状态代码的描述 OK
 
     public HttpResponseEvent() {
-        this.type = EEventType.HttpResponse;
+        this.type = "HttpResponse";
     }
 
     public String getHttpVersion() {
@@ -58,13 +56,5 @@ public class HttpResponseEvent extends Event{
         this.setOverview(overview.substring(0, firstBlank),
                 overview.substring(firstBlank + 1, secondBlank),
                 overview.substring(secondBlank + 1));
-    }
-
-    public void setHeader(String header){
-        this.header = header;
-    }
-
-    public void setBody(String body){
-        this.body = body;
     }
 }

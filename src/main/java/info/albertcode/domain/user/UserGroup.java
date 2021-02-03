@@ -1,4 +1,4 @@
-package info.albertcode.domain;
+package info.albertcode.domain.user;
 
 import info.albertcode.utils.enums.EUserGroup;
 

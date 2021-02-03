@@ -1,6 +1,7 @@
 package info.albertcode.dao;
 
-import info.albertcode.domain.User;
+import info.albertcode.domain.user.Account;
+import info.albertcode.domain.user.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
@@ -17,13 +18,13 @@ public interface IAccountDao {
      * 查询所有账户信息
      * @return
      */
-    @Select("select * from account")
-    public List<User> findAll();
+    @Select("select * from db_account")
+    public List<Account> findAll();
 
     /**
      * 保存账户信息
      * @param account
      */
     @Insert("insert into account (name, money) values (#{name}, #{money})")
-    public void saveAccount(User account);
+    public void saveAccount(Account account);
 }

@@ -1,20 +1,19 @@
 package info.albertcode.domain.event;
 
-import info.albertcode.utils.enums.EEventType;
-
+import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @Description: 事件：用于作为任务的输入输出使用
+ * @Description: 事件：每个Task（任务）会产生一个输出事件
  * @Author: Albert Shen
  */
 
-public abstract class Event {
+public class Event implements Serializable {
     private Integer id;
-    private Date generatedTime; // 事件生成事件，由抽象类负责，子类不具有修改权限
-    private boolean successful; // 事件是否为成功执行，由抽象类负责，子类不具有修改权限
-    protected EEventType type; // 事件的类型，如http请求，http相应，由子类在构造时自动生成，对外仅提供get方法
-    protected String overview; // 事件的总览
+    private Date generatedTime; // 事件产生时间
+    private boolean successful; // 任务是否成功执行
+    protected String type; // 事件的类型，如http响应，创建时由子类负责
+    protected String overview; // 事件的总览，大部分子类需要重写此类
     protected String header; // 事件的头部
     protected String body; // 事件体
 
@@ -42,20 +41,36 @@ public abstract class Event {
         this.successful = successful;
     }
 
-    public EEventType getType() {
+    public String getType() {
         return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getOverview() {
         return overview;
     }
 
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
+
     public String getHeader() {
         return header;
     }
 
+    public void setHeader(String header) {
+        this.header = header;
+    }
+
     public String getBody() {
         return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
     }
 
     @Override

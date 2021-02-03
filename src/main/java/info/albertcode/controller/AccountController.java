@@ -1,6 +1,7 @@
 package info.albertcode.controller;
 
-import info.albertcode.domain.User;
+import info.albertcode.domain.user.Account;
+import info.albertcode.domain.user.User;
 import info.albertcode.service.impl.AccountServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,14 +27,14 @@ public class AccountController {
     @RequestMapping(value = "/findAll")
     public String findAll(Model model){
         System.out.println("表现层：查询所有账户信息...");
-        List<User> list = accountService.findAll();
+        List<Account> list = accountService.findAll();
         System.out.println("表现层：查询所有账户完成...");
         model.addAttribute("list", list);
         return "list";
     }
 
     @RequestMapping("/save")
-    public void save(User account, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void save(Account account, HttpServletRequest request, HttpServletResponse response) throws IOException {
         System.out.println("表现层：保存账户信息...");
         accountService.saveAccount(account);
         response.sendRedirect(request.getContextPath() + "/account/findAll");

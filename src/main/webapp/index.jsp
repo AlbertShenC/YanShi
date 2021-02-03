@@ -21,5 +21,7 @@
     <input type="submit" value="保存"><br>
 </form>
 
+<a href="/event/findByPage">按页查询事件</a>
+
 </body>
 </html>
