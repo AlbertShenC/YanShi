@@ -23,5 +23,7 @@
 
 <a href="/event/findByPage">按页查询事件</a>
 
+<a href="/task/execute?taskId=1">测试http请求</a>
+
 </body>
 </html>

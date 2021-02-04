@@ -10,8 +10,8 @@ import java.util.Date;
 
 public class Event implements Serializable {
     private Integer id;
-    private Date generatedTime; // 事件产生时间
-    private boolean successful; // 任务是否成功执行
+    protected Date generatedTime; // 事件产生时间
+    protected boolean successful; // 任务是否成功执行
     protected String type; // 事件的类型，如http响应，创建时由子类负责
     protected String overview; // 事件的总览，大部分子类需要重写此类
     protected String header; // 事件的头部
@@ -77,7 +77,9 @@ public class Event implements Serializable {
     public String toString() {
         return "Event{" +
                 "id=" + id +
-                ", type=" + type +
+                ", generatedTime=" + generatedTime +
+                ", successful=" + successful +
+                ", type='" + type + '\'' +
                 ", overview='" + overview + '\'' +
                 ", header='" + header + '\'' +
                 ", body='" + body + '\'' +

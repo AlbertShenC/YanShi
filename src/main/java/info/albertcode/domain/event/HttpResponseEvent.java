@@ -1,5 +1,7 @@
 package info.albertcode.domain.event;
 
+import java.util.Date;
+
 /**
  * @Description: http 响应事件，overview = httpVersion + " " + statusCode + " " + reasonPhrase
  * @Author: Albert Shen
@@ -12,6 +14,7 @@ public class HttpResponseEvent extends Event{
 
     public HttpResponseEvent() {
         this.type = "HttpResponse";
+        this.generatedTime = new Date();
     }
 
     public String getHttpVersion() {
@@ -51,6 +54,8 @@ public class HttpResponseEvent extends Event{
     }
 
     public void setOverview(String overview){
+        System.out.println("执行了子类的封装...");
+
         int firstBlank = overview.indexOf(" ");
         int secondBlank = overview.indexOf(" ", firstBlank + 1);
         this.setOverview(overview.substring(0, firstBlank),

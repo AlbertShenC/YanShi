@@ -2,6 +2,13 @@ package info.albertcode.domain.request;
 
 /**
  * @Description: 发起 HTTPRequest 的请求，overview = method + " " + url
+ *      其中，get请求的 url 是不包括 query 部分的，是被写在 body 内，
+ *      目的是为了和 post 方法保持一致，从而使用同一个执行方法。
+ *      body 和 header 部分采用键值对形式的字符串，同一键值对的键与值使用 = 连接，
+ *      不同键值对之间使用 & 连接。
+ *      如对于 get https://www.baidu.com/s?ie=UTF-8&wd=albert，储存形式为
+ *      overview：get https://www.baidu.com/s
+ *      body：ie=UTF-8&wd=albert
  * @Author: Albert Shen
  */
 

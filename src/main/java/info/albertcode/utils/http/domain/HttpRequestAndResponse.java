@@ -131,7 +131,7 @@ public abstract class HttpRequestAndResponse {
     }
 
     /**
-     * 获取服务器响应 http 版本，分为 HTTP/1.0 与 HTTP/1.1
+     * 获取服务器响应 http 版本，如 HTTP/1.0 与 HTTP/1.1
      */
     public String getResponseProtocolVersion(){
         return this.response.getProtocolVersion().toString();
