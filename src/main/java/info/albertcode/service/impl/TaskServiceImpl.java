@@ -2,6 +2,7 @@ package info.albertcode.service.impl;
 
 import info.albertcode.dao.IEventDao;
 import info.albertcode.dao.IRequestDao;
+import info.albertcode.dao.ITaskDao;
 import info.albertcode.domain.event.Event;
 import info.albertcode.domain.request.Request;
 import info.albertcode.domain.task.HttpRequestTask;
@@ -19,26 +20,15 @@ import org.springframework.stereotype.Service;
 public class TaskServiceImpl implements ITaskService {
 
     @Autowired
+    private ITaskDao taskDao;
+    @Autowired
     private IRequestDao requestDao;
     @Autowired
     private IEventDao eventDao;
 
-    // 临时模拟dao层使用
-    private Task getTask(Integer taskId){
-        Request request = requestDao.findRequestById(1); // todo:通过Task获取到request的id
-        System.out.println(request);
-        System.out.println("taskId = " + taskId);
-
-        Task task = new HttpRequestTask();
-        task.setId(taskId);
-        task.setRequest(request);
-
-        return task;
-    }
-
     @Override
     public Event execute(Integer taskId) throws Exception {
-        Task task = getTask(taskId);
+        Task task = taskDao.findTaskById(taskId);
 
         if (task.getType().equals("HttpRequest")){
             System.out.println("调用HttpRequest执行方法...");

@@ -18,7 +18,7 @@ public class TaskController {
 
     @RequestMapping("/execute")
     public String execute(Integer taskId) throws Exception {
-        System.out.println(taskService.execute(taskId));
+        taskService.execute(taskId);
         return "result";
     }
 }

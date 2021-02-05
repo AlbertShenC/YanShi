@@ -43,7 +43,7 @@ public class HttpRequestTaskServiceImpl {
 
     public static Event eventEncapsulation(HttpRequestAndResponse requestAndResponse) throws Exception {
         HttpResponseEvent event = new HttpResponseEvent();
-        event.setSuccessful(true);
+        event.setSuccessful(true); // todo:成功条件判断
         event.setHttpVersion(requestAndResponse.getResponseProtocolVersion());
         event.setStatusCode(requestAndResponse.getResponseStatus());
         event.setReasonPhrase(requestAndResponse.getResponseReasonPhrase());

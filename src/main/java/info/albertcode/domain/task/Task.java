@@ -11,7 +11,7 @@ import java.util.List;
  * @Author: Albert Shen
  */
 
-public abstract class Task {
+public class Task {
     protected Integer id;
     protected String type; // 任务的种类
     protected String name; // 任务类的名称
