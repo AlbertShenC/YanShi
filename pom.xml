@@ -153,6 +153,19 @@
       <artifactId>httpclient</artifactId>
       <version>4.5.13</version>
     </dependency>
+
+    <!-- 字符串解析相关库-->
+    <dependency>
+      <groupId>org.jsoup</groupId>
+      <artifactId>jsoup</artifactId>
+      <version>1.13.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>cn.wanghaomiao</groupId>
+      <artifactId>JsoupXpath</artifactId>
+      <version>2.4.3</version>
+    </dependency>
   </dependencies>
 
   <build>

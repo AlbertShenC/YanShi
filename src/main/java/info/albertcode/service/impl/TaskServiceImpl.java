@@ -22,8 +22,6 @@ public class TaskServiceImpl implements ITaskService {
     @Autowired
     private ITaskDao taskDao;
     @Autowired
-    private IRequestDao requestDao;
-    @Autowired
     private IEventDao eventDao;
 
     @Override
@@ -33,6 +31,9 @@ public class TaskServiceImpl implements ITaskService {
         if (task.getType().equals("HttpRequest")){
             System.out.println("调用HttpRequest执行方法...");
             return executeHttpRequest(task);
+        } else if (task.getType().equals("StringParser")){
+            System.out.println("调用StringParser执行方法...");
+            return executeStringParse(task);
         } else {
             System.out.println("调用具体执行方法错误...");
             return null;
@@ -43,5 +44,9 @@ public class TaskServiceImpl implements ITaskService {
         Event event = HttpRequestTaskServiceImpl.executeHttpRequest(task);
         eventDao.saveEvent(event);
         return event;
+    }
+
+    private Event executeStringParse(Task task) throws Exception{
+        return null;
     }
 }

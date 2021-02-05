@@ -26,6 +26,7 @@ public class HttpRequestRequest extends Request{
         this.setOverview(request.getOverview());
         this.setHeader(request.getHeader());
         this.setBody(request.getBody());
+        this.setAddition(request.getAddition());
     }
 
     public String getMethod() {

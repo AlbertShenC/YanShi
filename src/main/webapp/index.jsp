@@ -11,18 +11,10 @@
     <title>Title</title>
 </head>
 <body>
-<a href="account/findAll">测试SpringMVC</a>
-
-<h3>测试保存</h3>
-
-<form action="/account/save" method="post">
-    姓名：<input type="text" name="name"><br>
-    金额：<input type="text" name="money"><br>
-    <input type="submit" value="保存"><br>
-</form>
+<h3>测试首页</h3>
 
 <a href="/event/findByPage">按页查询事件</a>
-
+<br>
 <a href="/task/execute?taskId=1">测试http请求</a>
 
 </body>

@@ -18,11 +18,11 @@ import java.util.List;
 
 public class HttpRequestTaskServiceImpl {
 
-    public static HttpRequestRequest prepareRequest(Task task){
+    private static HttpRequestRequest prepareRequest(Task task){
         return new HttpRequestRequest(task.getRequest());
     }
 
-    public static HttpRequestAndResponse httpRequestAndResponseEncapsulation(HttpRequestRequest request) throws URISyntaxException {
+    private static HttpRequestAndResponse httpRequestAndResponseEncapsulation(HttpRequestRequest request) throws URISyntaxException {
         Director director = new Director(request.getMethod())
                 .uri(request.getUrl());
 
@@ -41,7 +41,10 @@ public class HttpRequestTaskServiceImpl {
         return director.build();
     }
 
-    public static Event eventEncapsulation(HttpRequestAndResponse requestAndResponse) throws Exception {
+    /**
+     * 将数据库的对象封装为执行所需的对象
+     */
+    private static Event eventEncapsulation(HttpRequestAndResponse requestAndResponse) throws Exception {
         HttpResponseEvent event = new HttpResponseEvent();
         event.setSuccessful(true); // todo:成功条件判断
         event.setHttpVersion(requestAndResponse.getResponseProtocolVersion());

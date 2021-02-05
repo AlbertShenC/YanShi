@@ -8,15 +8,17 @@ import java.util.List;
 
 /**
  * @Description: 抽象任务类
+ * 名称不得包含字符 . & todo:给name赋值时的合法性判断
+ *
  * @Author: Albert Shen
  */
 
 public class Task {
     protected Integer id;
     protected String type; // 任务的种类
-    protected String name; // 任务类的名称
+    protected String name; // 任务的名称
     protected Request request; // 任务的请求
-    protected List<Event> inputEvent; // 任务类的输入事件
+    protected String inputEvent; // 任务类的输入事件
     protected Event outputEvent; // 任务类的输出事件
     protected List<Task> nextTasks; // 下一个任务（可能包含多个）
     protected Procedure belongedProcedure; // 所属流程
@@ -53,11 +55,11 @@ public class Task {
         this.request = request;
     }
 
-    public List<Event> getInputEvent() {
+    public String getInputEvent() {
         return inputEvent;
     }
 
-    public void setInputEvent(List<Event> inputEvent) {
+    public void setInputEvent(String inputEvent) {
         this.inputEvent = inputEvent;
     }
 
