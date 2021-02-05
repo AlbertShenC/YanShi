@@ -1,63 +1,28 @@
-package info.albertcode.service.impl;
+package info.albertcode.service.taskServiceImpl;
 
-import info.albertcode.dao.IRequestDao;
 import info.albertcode.domain.event.Event;
 import info.albertcode.domain.event.HttpResponseEvent;
 import info.albertcode.domain.request.HttpRequestRequest;
-import info.albertcode.domain.request.Request;
-import info.albertcode.domain.task.HttpRequestTask;
 import info.albertcode.domain.task.Task;
-import info.albertcode.service.ITaskService;
 import info.albertcode.utils.http.director.Director;
 import info.albertcode.utils.http.domain.HttpRequestAndResponse;
 import org.apache.http.NameValuePair;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+import java.net.URISyntaxException;
 import java.util.List;
 
 /**
  * @Description:
  * @Author: Albert Shen
  */
-@Service(value = "taskService")
-public class TaskService implements ITaskService {
 
-    @Autowired
-    private IRequestDao requestDao;
+public class HttpRequestTaskServiceImpl {
 
-    // 临时模拟dao层使用
-    private Task getTask(Integer taskId){
-        Request request = requestDao.findRequestById(1); // todo:通过Task获取到request的id
-        System.out.println(request);
-        System.out.println("taskId = " + taskId);
-
-        Task task = new HttpRequestTask();
-        task.setId(taskId);
-        task.setRequest(request);
-
-        return task;
+    public static HttpRequestRequest prepareRequest(Task task){
+        return new HttpRequestRequest(task.getRequest());
     }
 
-    @Override
-    public Event execute(Integer taskId) throws Exception {
-        Task task = getTask(taskId);
-
-        if (task.getType().equals("HttpRequest")){
-            System.out.println("调用HttpRequest执行方法...");
-            return executeHttpRequest(task);
-        } else {
-            System.out.println("调用具体执行方法错误...");
-            return null;
-        }
-    }
-
-    private Event executeHttpRequest(Task task) throws Exception {
-        HttpRequestRequest request = new HttpRequestRequest();
-        request.setOverview(task.getRequest().getOverview());
-        request.setHeader(task.getRequest().getHeader());
-        request.setBody(task.getRequest().getBody());
-
+    public static HttpRequestAndResponse httpRequestAndResponseEncapsulation(HttpRequestRequest request) throws URISyntaxException {
         Director director = new Director(request.getMethod())
                 .uri(request.getUrl());
 
@@ -73,16 +38,17 @@ public class TaskService implements ITaskService {
             director.parameter(nameAndValue[0], nameAndValue[1]);
         }
 
-        HttpRequestAndResponse requestAndResponse = director.build();
-        requestAndResponse.execute();
+        return director.build();
+    }
 
+    public static Event eventEncapsulation(HttpRequestAndResponse requestAndResponse) throws Exception {
         HttpResponseEvent event = new HttpResponseEvent();
         event.setSuccessful(true);
         event.setHttpVersion(requestAndResponse.getResponseProtocolVersion());
         event.setStatusCode(requestAndResponse.getResponseStatus());
         event.setReasonPhrase(requestAndResponse.getResponseReasonPhrase());
 
-        String resultHeaders = new String();
+        String resultHeaders = "";
         List<NameValuePair> responseHeaders = requestAndResponse.getResponseHeaders();
         for (NameValuePair responseHeader : responseHeaders){
             resultHeaders = resultHeaders + responseHeader.getName() + "=" +
@@ -91,7 +57,13 @@ public class TaskService implements ITaskService {
         event.setHeader(resultHeaders.substring(0, resultHeaders.length() - 1));
 
         event.setBody(requestAndResponse.getResponseEntity());
-
         return event;
+    }
+
+    public static Event executeHttpRequest(Task task) throws Exception{
+        HttpRequestRequest request = prepareRequest(task);
+        HttpRequestAndResponse requestAndResponse = httpRequestAndResponseEncapsulation(request);
+        requestAndResponse.execute();
+        return eventEncapsulation(requestAndResponse);
     }
 }

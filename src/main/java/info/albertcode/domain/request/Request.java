@@ -6,7 +6,7 @@ package info.albertcode.domain.request;
  */
 
 public class Request {
-    private Integer id;
+    protected Integer id;
     protected String type; // 事件的类型，如http请求，http响应，创建时由子类负责
     protected String overview; // 事件的总览，大部分子类需要重写此类
     protected String header; // 事件的头部

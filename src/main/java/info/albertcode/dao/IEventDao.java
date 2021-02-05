@@ -29,4 +29,11 @@ public interface IEventDao {
      */
     //todo: 如果查询一个不存在的行会怎么样？
     public Event findById(Integer id);
+
+    @Insert("insert into db_event " +
+            "(generatedTime, successful, type, overview, header, body) " +
+            "values " +
+            "(#{generatedTime}, #{successful}, #{type}, #{overview}, " +
+            "#{header}, #{body});")
+    public void saveEvent(Event event);
 }

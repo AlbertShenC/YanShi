@@ -12,14 +12,14 @@ import java.util.List;
  */
 
 public abstract class Task {
-    private Integer id;
+    protected Integer id;
     protected String type; // 任务的种类
     protected String name; // 任务类的名称
     protected Request request; // 任务的请求
     protected List<Event> inputEvent; // 任务类的输入事件
     protected Event outputEvent; // 任务类的输出事件
     protected List<Task> nextTasks; // 下一个任务（可能包含多个）
-    private Procedure belongedProcedure; // 所属流程
+    protected Procedure belongedProcedure; // 所属流程
 
     public Integer getId() {
         return id;
