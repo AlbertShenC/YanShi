@@ -19,7 +19,18 @@ public interface ITaskDao {
     @Results(value = {
             @Result(property = "request", column = "requestId",
                 one = @One(select = "info.albertcode.dao.IRequestDao.findRequestById",
-                fetchType = FetchType.EAGER))
+                fetchType = FetchType.EAGER)),
+            @Result(property = "inputEvent", column = "inputEvent",
+                one = @One(select = "info.albertcode.dao.IEventDao.findLastEventGeneratedByGivenTask",
+                fetchType = FetchType.LAZY))
     })
     public Task findTaskById(Integer taskId);
+
+    @Select("select * from db_task where name = #{taskName}")
+    @Results(value = {
+            @Result(property = "request", column = "requestId",
+                    one = @One(select = "info.albertcode.dao.IRequestDao.findRequestById",
+                            fetchType = FetchType.EAGER))
+    })
+    public Task findTaskByName(String taskName);
 }

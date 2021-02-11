@@ -9,6 +9,7 @@ import info.albertcode.domain.task.HttpRequestTask;
 import info.albertcode.domain.task.Task;
 import info.albertcode.service.ITaskService;
 import info.albertcode.service.taskServiceImpl.HttpRequestTaskServiceImpl;
+import info.albertcode.service.taskServiceImpl.StringParserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,11 +43,15 @@ public class TaskServiceImpl implements ITaskService {
 
     private Event executeHttpRequest(Task task) throws Exception {
         Event event = HttpRequestTaskServiceImpl.executeHttpRequest(task);
+        event.setBelongedTask(task.getName());
         eventDao.saveEvent(event);
         return event;
     }
 
     private Event executeStringParse(Task task) throws Exception{
-        return null;
+        Event event = StringParserServiceImpl.executeStringParser(task);
+        event.setBelongedTask(task.getName());
+        eventDao.saveEvent(event);
+        return event;
     }
 }

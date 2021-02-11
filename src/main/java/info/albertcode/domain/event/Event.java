@@ -10,6 +10,7 @@ import java.util.Date;
 
 public class Event implements Serializable {
     private Integer id;
+    protected String belongedTask; // 所属任务名称
     protected Date generatedTime; // 事件产生时间
     protected boolean successful; // 任务是否成功执行
     protected String type; // 事件的类型，如http响应，创建时由子类负责
@@ -23,6 +24,14 @@ public class Event implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getBelongedTask() {
+        return belongedTask;
+    }
+
+    public void setBelongedTask(String belongedTask) {
+        this.belongedTask = belongedTask;
     }
 
     public Date getGeneratedTime() {
@@ -82,7 +91,7 @@ public class Event implements Serializable {
                 ", type='" + type + '\'' +
                 ", overview='" + overview + '\'' +
                 ", header='" + header + '\'' +
-                ", body='" + body + '\'' +
+//                ", body='" + body + '\'' +
                 '}';
     }
 }

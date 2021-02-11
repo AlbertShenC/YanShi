@@ -13,7 +13,6 @@ public class Request implements Serializable {
     protected String overview; // 事件的总览，大部分子类需要重写此类
     protected String header; // 事件的头部
     protected String body; // 事件体
-    protected String addition; // 一些较为复杂的事件的补充说明
 
     public Integer getId() {
         return id;
@@ -53,14 +52,6 @@ public class Request implements Serializable {
 
     public void setBody(String body) {
         this.body = body;
-    }
-
-    public String getAddition() {
-        return addition;
-    }
-
-    public void setAddition(String addition) {
-        this.addition = addition;
     }
 
     @Override

@@ -30,10 +30,23 @@ public interface IEventDao {
     //todo: 如果查询一个不存在的行会怎么样？
     public Event findById(Integer id);
 
+    /**
+     * 获取 name值 为传入参数 eventName 的行
+     * @return 查询到的事件
+     */
+    @Select("select * from db_event where name = #{taskName}")
+    public Event findEventByName(String eventName);
+
+    /**
+     * 获取指定名称的任务所生成的最后一个事件
+     */
+    @Select("select * from db_event where belongedTask = #{taskName} order by id desc limit 1")
+    public Event findLastEventGeneratedByGivenTask(String taskName);
+
     @Insert("insert into db_event " +
-            "(generatedTime, successful, type, overview, header, body) " +
+            "(belongedTask, generatedTime, successful, type, overview, header, body) " +
             "values " +
-            "(#{generatedTime}, #{successful}, #{type}, #{overview}, " +
+            "(#{belongedTask}, #{generatedTime}, #{successful}, #{type}, #{overview}, " +
             "#{header}, #{body});")
     public void saveEvent(Event event);
 }

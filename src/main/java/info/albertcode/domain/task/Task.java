@@ -14,11 +14,12 @@ import java.util.List;
  */
 
 public class Task {
-    protected Integer id;
+    protected Integer id; // 任务id，由数据库自动生成
     protected String type; // 任务的种类
-    protected String name; // 任务的名称
+    protected String name; // 用户自定义任务的名称
     protected Request request; // 任务的请求
-    protected String inputEvent; // 任务类的输入事件
+    protected Event inputEvent; // 任务类的输入事件，表示某个任务的最后一个输出事件
+    protected String inputEventProperty; // 具体获取输入事件的哪一个属性值，如Overview，Header，Body
     protected Event outputEvent; // 任务类的输出事件
     protected List<Task> nextTasks; // 下一个任务（可能包含多个）
     protected Procedure belongedProcedure; // 所属流程
@@ -55,12 +56,20 @@ public class Task {
         this.request = request;
     }
 
-    public String getInputEvent() {
+    public Event getInputEvent() {
         return inputEvent;
     }
 
-    public void setInputEvent(String inputEvent) {
+    public void setInputEvent(Event inputEvent) {
         this.inputEvent = inputEvent;
+    }
+
+    public String getInputEventProperty() {
+        return inputEventProperty;
+    }
+
+    public void setInputEventProperty(String inputEventProperty) {
+        this.inputEventProperty = inputEventProperty;
     }
 
     public Event getOutputEvent() {

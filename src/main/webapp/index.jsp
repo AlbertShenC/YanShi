@@ -11,11 +11,15 @@
     <title>Title</title>
 </head>
 <body>
-<h3>测试首页</h3>
+    <h3>测试首页</h3>
 
-<a href="/event/findByPage">按页查询事件</a>
-<br>
-<a href="/task/execute?taskId=1">测试http请求</a>
+    <a href="/event/findByPage">按页查询事件</a>
+    <br>
+    <a href="/task/execute?taskId=1">测试http请求：百度搜索Albert</a>
+    <br>
+    <a href="/task/execute?taskId=2">测试http请求：博客园首页</a>
+    <br>
+    <a href="/task/execute?taskId=3">测试字符串解析请求：Xpath</a>
 
 </body>
 </html>

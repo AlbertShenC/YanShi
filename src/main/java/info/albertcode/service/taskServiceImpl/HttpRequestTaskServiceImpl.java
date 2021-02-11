@@ -29,13 +29,17 @@ public class HttpRequestTaskServiceImpl {
         String[] headers = request.getHeader().split("&");
         for (String header : headers){
             String[] nameAndValue = header.split("=");
-            director.header(nameAndValue[0], nameAndValue[1]);
+            if (nameAndValue.length == 2){
+                director.header(nameAndValue[0], nameAndValue[1]);
+            }
         }
 
         String[] parameters = request.getBody().split("&");
         for (String parameter : parameters){
             String[] nameAndValue = parameter.split("=");
-            director.parameter(nameAndValue[0], nameAndValue[1]);
+            if (nameAndValue.length == 2){
+                director.parameter(nameAndValue[0], nameAndValue[1]);
+            }
         }
 
         return director.build();
