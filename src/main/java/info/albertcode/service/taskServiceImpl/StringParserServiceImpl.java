@@ -3,22 +3,19 @@ package info.albertcode.service.taskServiceImpl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import info.albertcode.dao.IEventDao;
-import info.albertcode.dao.ITaskDao;
 import info.albertcode.domain.event.Event;
 import info.albertcode.domain.event.StringParserEvent;
 import info.albertcode.domain.request.StringParserRequest;
 import info.albertcode.domain.task.Task;
+import info.albertcode.utils.json.JSONConverter;
+import info.albertcode.utils.json.KeyValues;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.seimicrawler.xpath.JXDocument;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -40,16 +37,13 @@ public class StringParserServiceImpl {
      * @param stringToParser 被解析的字符串
      * @return
      */
-    private static List<String> executeCSS(String selector, String stringToParser){
+    private static void executeCSS(String selector, String stringToParser, int keySubscript, KeyValues keyValues){
         Document document = Jsoup.parse(stringToParser);
         Elements cssElements = document.select(selector);
 
-        List<String> returnValue = new ArrayList<String>();
         for (Element element : cssElements){
-            returnValue.add(element.toString());
+            keyValues.addValue(keySubscript, element.toString());
         }
-
-        return returnValue;
     }
 
     /**
@@ -58,16 +52,13 @@ public class StringParserServiceImpl {
      * @param stringToParser 被解析的字符串
      * @return
      */
-    private static List<String> executeXpath(String xpath, String stringToParser){
+    private static void executeXpath(String xpath, String stringToParser, int keySubscript, KeyValues keyValues){
         JXDocument jxDocument = JXDocument.create(stringToParser);
         List<Object> xpathElements = jxDocument.sel(xpath);
 
-        List<String> returnValue = new ArrayList<String>();
         for (Object o : xpathElements){
-            returnValue.add(o.toString());
+            keyValues.addValue(keySubscript, o.toString());
         }
-
-        return returnValue;
     }
 
     /**
@@ -77,16 +68,13 @@ public class StringParserServiceImpl {
      * @param groupNumber 需要获取的 group 下标
      * @return
      */
-    private static List<String> executeRegex(String pattern, String stringToParser, Integer groupNumber){
+    private static void executeRegex(String pattern, String stringToParser, Integer groupNumber, int keySubscript, KeyValues keyValues){
         Pattern r = Pattern.compile(pattern);
         Matcher matcher = r.matcher(stringToParser);
 
-        List<String> returnValue = new ArrayList<>();
         while (matcher.find()){
-            returnValue.add(matcher.group(groupNumber));
+            keyValues.addValue(keySubscript, matcher.group(groupNumber));
         }
-
-        return returnValue;
     }
 
 
@@ -111,51 +99,56 @@ public class StringParserServiceImpl {
 
         // 获取要封装的键值对，并根据request内容对输入event进行解析
         String[] keys = request.getHeader().split("&");
+        KeyValues keyValues = new KeyValues();
+        for (String key : keys){
+            keyValues.addKey(key);
+        }
+
         JSONArray valueArray = JSON.parseArray(request.getBody());
         Integer size = keys.length;
         if (valueArray.size() != size){
             // todo:自定义异常，键值对数量不一致
         }
-        List<List<String>> results = new ArrayList<>();
 
         switch (request.getOverview()){
             case "CSS":
                 for (int i = 0; i < size; i++){
                     JSONObject object = valueArray.getJSONObject(i);
-                    results.add(
-                            executeCSS(
-                                    object.getString("selector"),
-                                    stringToParser
-                            )
+                    executeCSS(
+                            object.getString("selector"),
+                            stringToParser,
+                            i,
+                            keyValues
                     );
                 }
                 break;
             case "Xpath":
                 for (int i = 0; i < size; i++){
                     JSONObject object = valueArray.getJSONObject(i);
-                    results.add(
-                            executeXpath(
-                                    object.getString("xpath"),
-                                    stringToParser
-                            )
+                    executeXpath(
+                            object.getString("xpath"),
+                            stringToParser,
+                            i,
+                            keyValues
                     );
                 }
                 break;
             case "Regex":
                 for (int i = 0; i < size; i++){
                     JSONObject object = valueArray.getJSONObject(i);
-                    results.add(
-                            executeRegex(
-                                    object.getString("regex"),
-                                    stringToParser,
-                                    object.getInteger("groupNumber")
-                            )
+                    executeRegex(
+                            object.getString("regex"),
+                            stringToParser,
+                            object.getInteger("groupNumber"),
+                            i,
+                            keyValues
                     );
                 }
                 break;
             default:
                 //todo:自定义异常
         }
-        return new StringParserEvent(Arrays.asList(keys), results);
+        JSONArray resultArray = JSONConverter.KeyValuesToJsonArray(keyValues);
+        return new StringParserEvent(resultArray.toJSONString());
     }
 }
