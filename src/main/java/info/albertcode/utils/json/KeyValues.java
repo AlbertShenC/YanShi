@@ -1,5 +1,8 @@
 package info.albertcode.utils.json;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,6 +100,22 @@ public class KeyValues {
 
     public List<List<Object>> getValuesArray() {
         return valuesArray;
+    }
+
+    public JSONArray toJSONArray(){
+        JSONArray jsonArray = new JSONArray();
+        for (int i = 0; i < maxNumberOfValues; i++){
+            JSONObject jsonObject = new JSONObject();
+            for (int j = 0; j < numberOfKeys; j++){
+                if (valuesArray.get(j).size() > i){
+                    jsonObject.put(keys.get(j), valuesArray.get(j).get(i));
+                } else {
+                    jsonObject.put(keys.get(j), "");
+                }
+            }
+            jsonArray.add(jsonObject);
+        }
+        return jsonArray;
     }
 
     @Override
