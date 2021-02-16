@@ -48,18 +48,15 @@ public class HttpResponseEvent extends Event{
     }
 
     public void setOverview(String httpVersion, String statusCode, String reasonPhrase){
-        this.setHttpVersion(httpVersion);
-        this.setStatusCode(statusCode);
-        this.setReasonPhrase(reasonPhrase);
+        this.httpVersion = httpVersion;
+        this.statusCode = statusCode;
+        this.reasonPhrase = reasonPhrase;
+        this.overview = this.httpVersion + " " + this.statusCode
+                + " " + this.reasonPhrase;
     }
 
     public void setOverview(String overview){
-        System.out.println("执行了子类的封装...");
-
-        int firstBlank = overview.indexOf(" ");
-        int secondBlank = overview.indexOf(" ", firstBlank + 1);
-        this.setOverview(overview.substring(0, firstBlank),
-                overview.substring(firstBlank + 1, secondBlank),
-                overview.substring(secondBlank + 1));
+        String[] values = overview.split(" ");
+        this.setOverview(values[0], values[1], values[2]);
     }
 }

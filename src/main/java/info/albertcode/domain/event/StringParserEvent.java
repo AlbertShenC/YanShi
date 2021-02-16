@@ -17,5 +17,4 @@ public class StringParserEvent extends Event{
         this.generatedTime = new Date();
         this.body = body;
     }
-
 }

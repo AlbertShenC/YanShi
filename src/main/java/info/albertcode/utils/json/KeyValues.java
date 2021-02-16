@@ -36,7 +36,7 @@ public class KeyValues {
     public Integer addKey(String key){
         if (findKeySubscript(key) == -1){
             this.keys.add(key);
-            List<Object> values = new ArrayList<Object>();
+            List<Object> values = new ArrayList<>();
             valuesArray.add(values);
             numberOfKeys += 1;
         }

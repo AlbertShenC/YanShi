@@ -47,8 +47,9 @@ public class HttpRequestRequest extends Request{
     }
 
     public void setOverview(String method, String url){
-        setMethod(method);
-        setUrl(url);
+        this.method = method;
+        this.url = url;
+        this.overview = this.method + " " + this.url;
     }
 
     /**

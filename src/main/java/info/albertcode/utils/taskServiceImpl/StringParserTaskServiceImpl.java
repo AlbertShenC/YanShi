@@ -1,4 +1,4 @@
-package info.albertcode.service.taskServiceImpl;
+package info.albertcode.utils.taskServiceImpl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -23,8 +23,7 @@ import java.util.regex.Pattern;
  * @Description:
  * @Author: Albert Shen
  */
-@Service(value = "stringParserService")
-public class StringParserServiceImpl {
+public class StringParserTaskServiceImpl extends TaskWithInputEvent{
 
     private static StringParserRequest prepareRequest(Task task){
         return new StringParserRequest(task.getRequest());
@@ -78,23 +77,9 @@ public class StringParserServiceImpl {
 
 
     public static Event executeStringParser(Task task){
-        // 获取到任务所对应的request与输入event
+        // 获取到任务所对应的request与 要处理的输入event字符串
         StringParserRequest request = prepareRequest(task);
-        Event inputEvent = task.getInputEvent();
-        String stringToParser = null;
-        switch (task.getInputEventProperty()){
-            case "overview":
-                stringToParser = inputEvent.getOverview();
-                break;
-            case "header":
-                stringToParser = inputEvent.getHeader();
-                break;
-            case "body":
-                stringToParser = inputEvent.getBody();
-                break;
-            default:
-                // todo:自定义异常，获取的Event部分名称错误
-        }
+        String stringToParser = getInputEventString(task);
 
         // 获取要封装的键值对，并根据request内容对输入event进行解析
         String[] keys = request.getHeader().split("&");
