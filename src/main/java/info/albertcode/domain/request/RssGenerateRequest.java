@@ -2,7 +2,7 @@ package info.albertcode.domain.request;
 
 /**
  * @Description:
- * overview：
+ * overview：暂空
  * header：储存映射信息，使用 & 连接，并按照 titleAlias author text url的顺序，分别记录其别名
  *         如：BiaoTi&ZuoZhe&ZhengWen&LianJie
  * body：储存channel的基本信息，使用 & 连接，并按照 title url description 的顺序记录其指

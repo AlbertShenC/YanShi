@@ -12,13 +12,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/task")
 public class TaskController {
+    private ITaskService taskService;
 
     @Autowired
-    private ITaskService taskService;
+    public TaskController(ITaskService taskService) {
+        this.taskService = taskService;
+    }
 
     @RequestMapping("/execute")
     public String execute(Integer taskId) throws Exception {
-        taskService.execute(taskId);
+        taskService.executeTask(taskId);
         return "result";
     }
 }

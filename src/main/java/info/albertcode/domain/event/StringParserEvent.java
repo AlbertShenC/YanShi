@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @Description:
+ * @Description: 字符串处理结果储存于body中
  * @Author: Albert Shen
  */
 

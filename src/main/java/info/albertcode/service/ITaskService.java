@@ -11,5 +11,5 @@ import java.net.URISyntaxException;
 
 public interface ITaskService {
 
-    public Event execute(Integer taskId) throws Exception;
+    public Event executeTask(Integer taskId) throws Exception;
 }

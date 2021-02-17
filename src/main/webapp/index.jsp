@@ -22,6 +22,8 @@
     <a href="/task/execute?taskId=3">测试字符串解析请求：Xpath</a>
     <br>
     <a href="/task/execute?taskId=4">测试生成rss</a>
+    <br>
+    <a href="/task/execute?taskId=5">测试网页展示</a>
 
 </body>
 </html>

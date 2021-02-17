@@ -9,9 +9,12 @@ import java.util.Date;
  */
 
 public class Event implements Serializable {
-    private Integer id;
-    protected String belongedTask; // 所属任务名称
+    protected Integer id;
     protected Date generatedTime; // 事件产生时间
+    protected String belongedTaskName; // 所属事件的名称，仅用于展示，不建议用于查找其对应的Task
+    // 方便用户在前端判断此事件是由哪一个Task生成的，因为每个Task只会记录其生成的最后一个Event的id
+    // 具体场景，如：用户编写了相关模块，运行不符合期望，于是想查看一下某个Task前几次执行时产生的结果
+    // 那么就需要在展示Event时，同时说明其由哪一个Task所产生
     protected boolean successful; // 任务是否成功执行
     protected String type; // 事件的类型，如http响应，创建时由子类负责
     protected String overview; // 事件的总览，大部分子类需要重写此类
@@ -26,20 +29,20 @@ public class Event implements Serializable {
         this.id = id;
     }
 
-    public String getBelongedTask() {
-        return belongedTask;
-    }
-
-    public void setBelongedTask(String belongedTask) {
-        this.belongedTask = belongedTask;
-    }
-
     public Date getGeneratedTime() {
         return generatedTime;
     }
 
     public void setGeneratedTime(Date generatedTime) {
         this.generatedTime = generatedTime;
+    }
+
+    public String getBelongedTaskName() {
+        return belongedTaskName;
+    }
+
+    public void setBelongedTaskName(String belongedTaskName) {
+        this.belongedTaskName = belongedTaskName;
     }
 
     public boolean isSuccessful() {
@@ -87,11 +90,12 @@ public class Event implements Serializable {
         return "Event{" +
                 "id=" + id +
                 ", generatedTime=" + generatedTime +
+                ", belongedTaskName='" + belongedTaskName + '\'' +
                 ", successful=" + successful +
                 ", type='" + type + '\'' +
                 ", overview='" + overview + '\'' +
                 ", header='" + header + '\'' +
-//                ", body='" + body + '\'' +
+                ", body='" + body + '\'' +
                 '}';
     }
 }

@@ -9,7 +9,6 @@ import java.util.List;
 /**
  * @Description: 抽象任务类
  * 名称不得包含字符 . & todo:给name赋值时的合法性判断
- *
  * @Author: Albert Shen
  */
 
@@ -18,11 +17,10 @@ public class Task {
     protected String type; // 任务的种类
     protected String name; // 用户自定义任务的名称
     protected Request request; // 任务的请求
-    protected Event inputEvent; // 任务类的输入事件，表示某个任务的最后一个输出事件
+    protected Task preTask; // 在此任务之前的任务，其输出事件也将作为此任务的输入事件使用
     protected String inputEventProperty; // 具体获取输入事件的哪一个属性值，如Overview，Header，Body
     protected Event outputEvent; // 任务类的输出事件
     protected List<Task> nextTasks; // 下一个任务（可能包含多个）
-    protected Procedure belongedProcedure; // 所属流程
 
     public Integer getId() {
         return id;
@@ -56,12 +54,20 @@ public class Task {
         this.request = request;
     }
 
-    public Event getInputEvent() {
-        return inputEvent;
+    public Integer getRequestId(){
+        return request.getId();
     }
 
-    public void setInputEvent(Event inputEvent) {
-        this.inputEvent = inputEvent;
+    public Task getPreTask() {
+        return preTask;
+    }
+
+    public void setPreTask(Task preTask) {
+        this.preTask = preTask;
+    }
+
+    public Integer getPreTaskId() {
+        return preTask.getId();
     }
 
     public String getInputEventProperty() {
@@ -80,6 +86,10 @@ public class Task {
         this.outputEvent = outputEvent;
     }
 
+    public Integer getOutputEventId() {
+        return outputEvent.getId();
+    }
+
     public List<Task> getNextTasks() {
         return nextTasks;
     }
@@ -88,24 +98,17 @@ public class Task {
         this.nextTasks = nextTasks;
     }
 
-    public Procedure getBelongedProcedure() {
-        return belongedProcedure;
-    }
-
-    public void setBelongedProcedure(Procedure belongedProcedure) {
-        this.belongedProcedure = belongedProcedure;
-    }
-
     @Override
     public String toString() {
         return "Task{" +
                 "id=" + id +
+                ", type='" + type + '\'' +
                 ", name='" + name + '\'' +
                 ", request=" + request +
-                ", inputEvent=" + inputEvent +
+                ", preTask=" + preTask +
+                ", inputEventProperty='" + inputEventProperty + '\'' +
                 ", outputEvent=" + outputEvent +
                 ", nextTasks=" + nextTasks +
-                ", belongedProcedure=" + belongedProcedure +
                 '}';
     }
 }

@@ -5,7 +5,7 @@ drop table if exists db_procedure;
 drop table if exists db_account;
 
 create table db_request (id int primary key auto_increment, type varchar(20),
-                         overview text, header text, body text, addition text);
+                         overview text, header text, body text);
 
 insert into db_request (id, type, overview, header, body) values (1, 'HttpRequest',
                                                                   'get https://www.baidu.com/s',
@@ -25,19 +25,24 @@ insert into db_request (id, type, overview, header, body) VALUES (4, 'RssGenerat
                                                                   '', 'name&author&text&link',
                                                                   'channel标题&channel链接&channel说明');
 
-create table db_event (id int primary key auto_increment, belongedTask varchar(20), generatedTime datetime, successful boolean,
+insert into db_request (id, type, overview, header, body) VALUES (5, 'RegisterForWebPage', '', '', '');
+
+create table db_event (id int primary key auto_increment, generatedTime datetime, belongedTaskName varchar(20), successful boolean,
                        type varchar(20), overview varchar(100), header text, body longtext);
 
 create table db_task (id int primary key auto_increment, type varchar(20), name text, requestId int,
-                      inputEvent varchar(40), inputEventProperty varchar(20), belongedProcedure int);
+                      preTaskId int, inputEventProperty varchar(20), outputEventId int);
 
-insert into db_task (id, type, name, requestId, belongedProcedure) VALUES (1, 'HttpRequest', '百度搜索Albert', 1, 1);
+insert into db_task (id, type, name, requestId)VALUES (1, 'HttpRequest', '百度搜索Albert', 1);
 
-insert into db_task (id, type, name, requestId, belongedProcedure) VALUES (2, 'HttpRequest', '博客园首页', 2, 1);
+insert into db_task (id, type, name, requestId)VALUES (2, 'HttpRequest', '博客园首页', 2);
 
-insert into db_task (id, type, name, requestId, inputEvent, inputEventProperty, belongedProcedure) VALUES (3, 'StringParser',
-                                                                                                           '解析博客园首页', 3, '博客园首页', 'body', 1);
+insert into db_task (id, type, name, requestId, preTaskId, inputEventProperty)VALUES (3, 'StringParser',
+                                                                                      '解析博客园首页', 3, 2, 'body');
 
-insert into db_task (id, type, name, requestId, inputEvent, inputEventProperty, belongedProcedure) VALUES (4, 'RssGenerate',
-                                                                                                           '生成博客园rss', 4, '解析博客园首页', 'body', 1);
+insert into db_task (id, type, name, requestId, preTaskId, inputEventProperty)VALUES (4, 'RssGenerate',
+                                                                                      '生成博客园rss', 4, 3, 'body');
+
+insert into db_task (id, type, name, requestId, preTaskId, inputEventProperty) VALUES (5, 'RegisterForWebPage',
+                                                                                       '对外暴露rss访问接口', 5, 4, 'body');
 

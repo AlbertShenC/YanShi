@@ -3,7 +3,7 @@ package info.albertcode.domain.event;
 import java.util.Date;
 
 /**
- * @Description:
+ * @Description: 生成的rss的xml字符串储存于body中
  * @Author: Albert Shen
  */
 

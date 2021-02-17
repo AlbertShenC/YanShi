@@ -19,7 +19,7 @@ public class DaoTest {
     @Test
     public void testFindByColumn(){
         System.out.println("eventDao = " + eventDao);
-        List<Event> events = eventDao.findByColumn(0, 10);
+        List<Event> events = eventDao.findEventByColumn(0, 10);
         System.out.println(events);
     }
 }

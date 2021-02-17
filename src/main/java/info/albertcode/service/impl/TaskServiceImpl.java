@@ -6,6 +6,7 @@ import info.albertcode.domain.event.Event;
 import info.albertcode.domain.task.Task;
 import info.albertcode.service.ITaskService;
 import info.albertcode.utils.taskServiceImpl.HttpRequestTaskServiceImpl;
+import info.albertcode.utils.taskServiceImpl.RegisterForWebPageTaskServiceImpl;
 import info.albertcode.utils.taskServiceImpl.RssGenerateTaskServiceImpl;
 import info.albertcode.utils.taskServiceImpl.StringParserTaskServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +18,17 @@ import org.springframework.stereotype.Service;
  */
 @Service(value = "taskService")
 public class TaskServiceImpl implements ITaskService {
-
-    @Autowired
     private ITaskDao taskDao;
-    @Autowired
     private IEventDao eventDao;
 
+    @Autowired
+    public TaskServiceImpl(ITaskDao taskDao, IEventDao eventDao) {
+        this.taskDao = taskDao;
+        this.eventDao = eventDao;
+    }
+
     @Override
-    public Event execute(Integer taskId) throws Exception {
+    public Event executeTask(Integer taskId) throws Exception {
         Task task = taskDao.findTaskById(taskId);
 
         switch (task.getType()){
@@ -37,6 +41,9 @@ public class TaskServiceImpl implements ITaskService {
             case "RssGenerate":
                 System.out.println("调用RssGenerate执行方法");
                 return executeRssGenerate(task);
+            case "RegisterForWebPage":
+                System.out.println("调用RegisterForWebPage执行方法");
+                return executeRegisterForWebPage(task);
             default:
                 System.out.println("调用具体执行方法错误...");
                 return null;
@@ -44,8 +51,14 @@ public class TaskServiceImpl implements ITaskService {
     }
 
     private Event saveEvent(Task task, Event event){
-        event.setBelongedTask(task.getName());
-        eventDao.saveEvent(event);
+        event.setBelongedTaskName(task.getName());
+        if (event.getId() == null){
+            eventDao.saveEvent(event);
+        } else {
+            eventDao.updateEvent(event);
+        }
+        task.setOutputEvent(event);
+        taskDao.updateTask(task);
         return event;
     }
 
@@ -61,6 +74,11 @@ public class TaskServiceImpl implements ITaskService {
 
     private Event executeRssGenerate(Task task) {
         Event event = RssGenerateTaskServiceImpl.executeRssGenerate(task);
+        return saveEvent(task, event);
+    }
+
+    private Event executeRegisterForWebPage(Task task){
+        Event event = RegisterForWebPageTaskServiceImpl.executeRegisterForWebPage(task);
         return saveEvent(task, event);
     }
 }

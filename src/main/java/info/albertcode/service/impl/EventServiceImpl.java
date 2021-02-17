@@ -21,6 +21,6 @@ public class EventServiceImpl implements IEventService {
     public List<Event> findByPage(Integer page, Integer numPerPage) {
         System.out.println("业务层按页查询事件...");
         System.out.println(eventDao);
-        return eventDao.findByColumn(page * numPerPage, numPerPage);
+        return eventDao.findEventByColumn(page * numPerPage, numPerPage);
     }
 }
