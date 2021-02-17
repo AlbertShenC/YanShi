@@ -23,7 +23,9 @@
     <br>
     <a href="/task/execute?taskId=4">测试生成rss</a>
     <br>
-    <a href="/task/execute?taskId=5">测试网页展示</a>
+    <a href="/task/execute?taskId=5">测试网页生成</a>
+    <br>
+    <a href="/customPage?id=4">查看生成xml（仅id=4）</a>
 
 </body>
 </html>
