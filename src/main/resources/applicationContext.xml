@@ -19,6 +19,17 @@
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
+    <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="15"/>
+        <property name="maxPoolSize" value="30"/>
+        <property name="keepAliveSeconds" value="60"/>
+        <property name="queueCapacity" value="50"/>
+        <property name="allowCoreThreadTimeOut" value="true"/>
+        <property name="rejectedExecutionHandler">
+            <bean class="java.util.concurrent.ThreadPoolExecutor.DiscardOldestPolicy"/>
+        </property>
+    </bean>
+
 <!--    配置MyBatis框架-->
 <!--    引入外部配置文件-->
     <context:property-placeholder location="classpath:jdbcConfig.properties"/>
@@ -33,7 +44,7 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
     </bean>
-<!--    配置IAccountDao接口所在包-->
+<!--    配置Dao接口所在包-->
     <bean id="mapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="info.albertcode.dao"/>
     </bean>
