@@ -47,7 +47,6 @@ public class ProcedureController {
         }
     }
 
-    //todo:可能存在bug，几个线程都在notify Controller的时候，会不会因为Controller执行时间过长，漏掉了一些notify，可能要将if改成while
     public void execute(){
         threadPoolTaskExecutor.execute(new Runnable() {
             @Override

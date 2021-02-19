@@ -2,6 +2,8 @@ package info.albertcode.domain.procedure;
 
 import info.albertcode.domain.task.Task;
 
+import java.util.Date;
+
 /**
  * @Description: 流程，多个任务一起组成流程，一整个统一的逻辑块
  * @Author: Albert Shen
@@ -9,9 +11,10 @@ import info.albertcode.domain.task.Task;
 
 public class Procedure {
     private Integer id;
-    private InitTime initTime; // 启动时间
     private Task entryTask; // 流程的入口任务，流程只记录自己的开始任务是什么
                             // 通过任务中的下一个任务列表来获取全部任务
+    private InitTime initTime; // 定时启动时间/启动间隔
+    private Date lastExecuteDate; // 上一次开始执行的时间
 
 
     public Integer getId() {

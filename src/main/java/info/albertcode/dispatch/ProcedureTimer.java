@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
-import java.util.Queue;
-
 /**
  * @Description:
  * @Author: Albert Shen
@@ -18,13 +16,21 @@ public class ProcedureTimer {
     private ProcedureQueue procedureQueue;
     private MutexLock mutexLock;
     private ConsumerLock consumerLock;
+    private TimerLock timerLock;
 
     @Autowired
-    public ProcedureTimer(ThreadPoolTaskExecutor threadPoolTaskExecutor, ProcedureQueue procedureQueue, MutexLock mutexLock, ConsumerLock consumerLock) {
+    public ProcedureTimer(ThreadPoolTaskExecutor threadPoolTaskExecutor, ProcedureQueue procedureQueue, MutexLock mutexLock, ConsumerLock consumerLock, TimerLock timerLock) {
         this.threadPoolTaskExecutor = threadPoolTaskExecutor;
         this.procedureQueue = procedureQueue;
         this.mutexLock = mutexLock;
         this.consumerLock = consumerLock;
+        this.timerLock = timerLock;
+    }
+
+    public void registerProcedure(Procedure procedure){
+        synchronized (timerLock){
+
+        }
     }
 
     public void execute(){
