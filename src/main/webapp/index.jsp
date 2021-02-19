@@ -26,6 +26,8 @@
     <a href="/task/execute?taskId=5">测试网页生成</a>
     <br>
     <a href="/customPage?id=4">查看生成xml（仅id=4）</a>
+    <br>
+    <a href="/top/init">核心调度器初始化测试</a>
 
 </body>
 </html>

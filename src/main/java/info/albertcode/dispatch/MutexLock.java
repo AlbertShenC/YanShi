@@ -6,6 +6,6 @@ import org.springframework.stereotype.Service;
  * @Description:
  * @Author: Albert Shen
  */
-@Service(value = "executor")
-public class Executor {
+@Service(value = "mutexLock")
+public class MutexLock {
 }

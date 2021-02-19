@@ -9,4 +9,5 @@ public final class Setting {
     private Setting() { }
 
     public static final Integer taskQueueSize = 50;
+    public static final Integer procedureQueueSize = 10;
 }
