@@ -1,8 +1,8 @@
 package info.albertcode.domain.task;
 
 import info.albertcode.domain.event.Event;
-import info.albertcode.domain.procedure.Procedure;
 import info.albertcode.domain.request.Request;
+import info.albertcode.utils.enums.ETaskType;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import java.util.List;
 
 public class Task {
     protected Integer id; // 任务id，由数据库自动生成
-    protected String type; // 任务的种类
+    protected ETaskType typeEnum; // 任务的种类
     protected String name; // 用户自定义任务的名称
     protected Request request; // 任务的请求
     protected Task preTask; // 在此任务之前的任务，其输出事件也将作为此任务的输入事件使用
@@ -30,12 +30,20 @@ public class Task {
         this.id = id;
     }
 
-    public String getType() {
-        return type;
+    public ETaskType getTypeEnum() {
+        return typeEnum;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setTypeEnum(ETaskType typeEnum) {
+        this.typeEnum = typeEnum;
+    }
+
+    public Integer getType() {
+        return typeEnum.getValue();
+    }
+
+    public void setType(Integer typeValue) {
+        this.typeEnum = ETaskType.valueOf(typeValue);
     }
 
     public String getName() {
@@ -102,7 +110,7 @@ public class Task {
     public String toString() {
         return "Task{" +
                 "id=" + id +
-                ", type='" + type + '\'' +
+                ", type='" + typeEnum + '\'' +
                 ", name='" + name + '\'' +
                 ", request=" + request +
                 ", preTask=" + preTask +

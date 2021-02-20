@@ -1,8 +1,6 @@
 package info.albertcode.domain.task;
 
-import info.albertcode.domain.event.Event;
-
-import java.util.List;
+import info.albertcode.utils.enums.ETaskType;
 
 /**
  * @Description: 发起Http请求的任务类
@@ -11,6 +9,6 @@ import java.util.List;
 
 public class HttpRequestTask extends Task{
     public HttpRequestTask() {
-        this.type = "HttpRequest";
+        this.typeEnum = ETaskType.HttpRequest;
     }
 }

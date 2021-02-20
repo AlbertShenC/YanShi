@@ -31,17 +31,17 @@ public class TaskServiceImpl implements ITaskService {
     public Event executeTask(Integer taskId) throws Exception {
         Task task = taskDao.findTaskById(taskId);
 
-        switch (task.getType()){
-            case "HttpRequest":
+        switch (task.getTypeEnum()){
+            case HttpRequest:
                 System.out.println("调用HttpRequest执行方法...");
                 return executeHttpRequest(task);
-            case "StringParser":
+            case StringParser:
                 System.out.println("调用StringParser执行方法...");
                 return executeStringParse(task);
-            case "RssGenerate":
+            case RssGenerate:
                 System.out.println("调用RssGenerate执行方法");
                 return executeRssGenerate(task);
-            case "RegisterForWebPage":
+            case RegisterForWebPage:
                 System.out.println("调用RegisterForWebPage执行方法");
                 return executeRegisterForWebPage(task);
             default:

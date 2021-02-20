@@ -1,5 +1,7 @@
 package info.albertcode.domain.task;
 
+import info.albertcode.utils.enums.ETaskType;
+
 /**
  * @Description:
  * @Author: Albert Shen
@@ -7,6 +9,6 @@ package info.albertcode.domain.task;
 
 public class RssGenerateTask extends Task{
     public RssGenerateTask() {
-        this.type = "RssGenerate";
+        this.typeEnum = ETaskType.RssGenerate;
     }
 }
