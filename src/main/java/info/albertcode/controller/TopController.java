@@ -1,6 +1,7 @@
 package info.albertcode.controller;
 
 import info.albertcode.dispatch.YanShiCoreController;
+import info.albertcode.dispatch.YanShiCoreTimer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,16 +13,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/top")
 public class TopController {
-    YanShiCoreController procedureController;
+    YanShiCoreController yanShiCoreController;
+    YanShiCoreTimer yanShiCoreTimer;
 
     @Autowired
-    public TopController(YanShiCoreController procedureController) {
-        this.procedureController = procedureController;
+    public TopController(YanShiCoreController yanShiCoreController, YanShiCoreTimer yanShiCoreTimer) {
+        this.yanShiCoreController = yanShiCoreController;
+        this.yanShiCoreTimer = yanShiCoreTimer;
     }
 
     @RequestMapping("/init")
-    public String execute() throws Exception {
-        procedureController.init();
+    public String init() throws Exception {
+        yanShiCoreController.init();
+        return "result";
+    }
+
+    @RequestMapping("/execute")
+    public String execute(Integer procedureId) {
+        yanShiCoreTimer.registerProcedure(procedureId);
         return "result";
     }
 }

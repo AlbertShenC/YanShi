@@ -1,7 +1,6 @@
 package info.albertcode.dispatch;
 
-import info.albertcode.domain.procedure.Procedure;
-import info.albertcode.domain.task.Task;
+import info.albertcode.dao.IProcedureDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
@@ -13,56 +12,49 @@ import org.springframework.stereotype.Service;
 @Service(value = "yanShiCoreTimer")
 public class YanShiCoreTimer {
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
-    private ProcedureQueue procedureQueue;
-    private MutexLock mutexLock;
-    private ConsumerLock consumerLock;
-    private TimerLock timerLock;
+    private WaitingQueue waitingQueue;
+    private RegisterProcedureQueue registerProcedureQueue;
+    private IProcedureDao procedureDao;
 
     @Autowired
-    public YanShiCoreTimer(ThreadPoolTaskExecutor threadPoolTaskExecutor, ProcedureQueue procedureQueue, MutexLock mutexLock, ConsumerLock consumerLock, TimerLock timerLock) {
+    public YanShiCoreTimer(ThreadPoolTaskExecutor threadPoolTaskExecutor, WaitingQueue waitingQueue, RegisterProcedureQueue registerProcedureQueue, IProcedureDao procedureDao) {
         this.threadPoolTaskExecutor = threadPoolTaskExecutor;
-        this.procedureQueue = procedureQueue;
-        this.mutexLock = mutexLock;
-        this.consumerLock = consumerLock;
-        this.timerLock = timerLock;
+        this.waitingQueue = waitingQueue;
+        this.registerProcedureQueue = registerProcedureQueue;
+        this.procedureDao = procedureDao;
     }
 
-    public void registerProcedure(Procedure procedure){
-        synchronized (timerLock){
-
+    //todo:执行前需要计算一下应该什么时刻执行指定任务
+    public void registerProcedure(Integer procedureId){
+        synchronized (registerProcedureQueue){
+            registerProcedureQueue.push(procedureId);
+            registerProcedureQueue.notify();
         }
     }
 
     public void execute(){
         threadPoolTaskExecutor.execute(new Runnable() {
-            Integer i = 0;
-
             @Override
             public void run() {
-                System.out.println("  Timer：初始化中...");
+                System.out.println("Timer：初始化中...");
+                WaitingProcedureQueue waitingProcedureQueue = waitingQueue.getWaitingProcedureQueue();
+                System.out.println("Timer：初始化完成");
                 while (true){
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    Procedure procedure = new Procedure();
-                    Task task = new Task();
-                    task.setName("这是Timer创建的流程" + i + "的首个任务");
-                    procedure.setEntryTask(task);
-                    System.out.println("  Timer：创建完成第" + i + "个流程");
-
-
-                    synchronized (consumerLock){
-                        synchronized (mutexLock){
-                            procedureQueue.push(procedure);
-                            System.out.println("  Timer：将第" + i + "个流程加入ProcedureQueue");
+                    synchronized (registerProcedureQueue){
+                        try {
+                            registerProcedureQueue.wait();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
                         }
-                        consumerLock.notify();
-                        System.out.println("  Timer：唤醒Controller中...");
+                        synchronized (waitingQueue){
+                            while (!registerProcedureQueue.isEmpty()){
+                                waitingProcedureQueue.push(
+                                        procedureDao.findProcedureById(registerProcedureQueue.pop())
+                                );
+                            }
+                            waitingQueue.notify();
+                        }
                     }
-
-                    i++;
                 }
             }
         });

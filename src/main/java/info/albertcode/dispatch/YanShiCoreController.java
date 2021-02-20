@@ -5,45 +5,50 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+
 /**
  * @Description:
  * @Author: Albert Shen
  */
 @Service(value = "yanShiCoreController")
 public class YanShiCoreController {
-    private ProcedureQueue procedureQueue;
-    private TaskQueue taskQueue;
     private YanShiCoreTimer timer;
     private YanShiCoreExecutor executor;
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
-    private MutexLock mutexLock; // 两个消息队列的同步锁
-    private ConsumerLock consumerLock; // 通知Controller处理队列的信号量
+    private WaitingQueue waitingQueue;
+
+    private boolean isInitialized;
 
     @Autowired
-    public YanShiCoreController(ProcedureQueue procedureQueue, TaskQueue taskQueue, YanShiCoreTimer timer, YanShiCoreExecutor executor, ThreadPoolTaskExecutor threadPoolTaskExecutor, MutexLock mutexLock, ConsumerLock consumerLock) {
-        this.procedureQueue = procedureQueue;
-        this.taskQueue = taskQueue;
+    public YanShiCoreController(YanShiCoreTimer timer, YanShiCoreExecutor executor, ThreadPoolTaskExecutor threadPoolTaskExecutor, WaitingQueue waitingQueue) {
         this.timer = timer;
         this.executor = executor;
         this.threadPoolTaskExecutor = threadPoolTaskExecutor;
-        this.mutexLock = mutexLock;
-        this.consumerLock = consumerLock;
+        this.waitingQueue = waitingQueue;
+        this.isInitialized = false;
     }
 
+    @PostConstruct
     public void init(){
-        timer.execute();
-        this.execute();
+        if (this.isInitialized){
+            return;
+        } else {
+            this.isInitialized = true;
+            timer.execute();
+            this.execute();
+        }
     }
 
-    private Task getNextTaskToExecute(){
-        if (procedureQueue.isEmpty()){
-            if (taskQueue.isEmpty()){
+    private Task getNextTaskToExecute(WaitingProcedureQueue waitingProcedureQueue, WaitingTaskQueue waitingTaskQueue){
+        if (waitingProcedureQueue.isEmpty()){
+            if (waitingTaskQueue.isEmpty()){
                 return null;
             } else {
-                return taskQueue.pop();
+                return waitingTaskQueue.pop();
             }
         } else {
-            return procedureQueue.pop().getEntryTask();
+            return waitingProcedureQueue.pop().getEntryTask();
         }
     }
 
@@ -53,19 +58,21 @@ public class YanShiCoreController {
             public void run() {
                 Task nextTaskToExecute;
                 System.out.println("Controller：初始化中...");
+                WaitingProcedureQueue waitingProcedureQueue = waitingQueue.getWaitingProcedureQueue();
+                WaitingTaskQueue waitingTaskQueue = waitingQueue.getWaitingTaskQueue();
+                System.out.println("Controller：初始化完成");
                 while (true){
-                    synchronized (consumerLock){
+                    synchronized (waitingQueue){
                         try {
-                            consumerLock.wait();
-                            System.out.println("Controller：是谁召唤了我？");
+                            waitingQueue.wait();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        synchronized (mutexLock){
-                            while ((nextTaskToExecute = getNextTaskToExecute()) != null){
-                                System.out.println("Controller：获取到任务，TaskName = " + nextTaskToExecute.getName());
-                                executor.execute(nextTaskToExecute);
-                                System.out.println("Controller：Executor，我的仆人，执行它...");
+                        synchronized (waitingProcedureQueue){
+                            synchronized (waitingTaskQueue){
+                                while ((nextTaskToExecute = getNextTaskToExecute(waitingProcedureQueue, waitingTaskQueue)) != null){
+                                    executor.execute(nextTaskToExecute);
+                                }
                             }
                         }
                     }

@@ -27,7 +27,7 @@
     <br>
     <a href="/customPage?id=4">查看生成xml（仅id=4）</a>
     <br>
-    <a href="/top/init">核心调度器初始化测试</a>
+    <a href="/top/execute?procedureId=1">核心调度器初始化测试</a>
 
 </body>
 </html>

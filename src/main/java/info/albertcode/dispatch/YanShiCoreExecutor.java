@@ -1,9 +1,14 @@
 package info.albertcode.dispatch;
 
+import info.albertcode.domain.event.Event;
 import info.albertcode.domain.task.Task;
+import info.albertcode.service.ITaskService;
+import info.albertcode.service.impl.TaskServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @Description:
@@ -12,46 +17,37 @@ import org.springframework.stereotype.Service;
 @Service(value = "yanShiCoreExecutor")
 public class YanShiCoreExecutor {
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
-    private TaskQueue taskQueue;
-    private MutexLock mutexLock;
-    private ConsumerLock consumerLock;
+    private WaitingQueue waitingQueue;
+    private ITaskService taskService;
 
     @Autowired
-    public YanShiCoreExecutor(ThreadPoolTaskExecutor threadPoolTaskExecutor, TaskQueue taskQueue, MutexLock mutexLock, ConsumerLock consumerLock) {
+    public YanShiCoreExecutor(ThreadPoolTaskExecutor threadPoolTaskExecutor, WaitingQueue waitingQueue, ITaskService taskService) {
         this.threadPoolTaskExecutor = threadPoolTaskExecutor;
-        this.taskQueue = taskQueue;
-        this.mutexLock = mutexLock;
-        this.consumerLock = consumerLock;
+        this.waitingQueue = waitingQueue;
+        this.taskService = taskService;
     }
-
-    private Integer i = 0;
 
     public void execute(Task taskToExecute){
         threadPoolTaskExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                System.out.println("    Executor" + Thread.currentThread() + "：我被创建了");
+                WaitingTaskQueue waitingTaskQueue = waitingQueue.getWaitingTaskQueue();
                 try {
-                    System.out.println("    Executor" + Thread.currentThread() + "：正在执行任务，taskName = " + taskToExecute.getName());
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
+                    System.out.println("Executor " + Thread.currentThread() + "：正在执行任务，taskName = " + taskToExecute.getName());
+                    taskService.executeTask(taskToExecute.getId());
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-                Task taskGenerated = new Task();
-                synchronized (consumerLock){
-                    taskGenerated.setName("这是Executor产生的任务" + i);
-                    taskGenerated.setId(i);
-                    i++;
-                }
-                System.out.println("    Executor" + Thread.currentThread() + "：创建完成第" + taskGenerated.getId() + "个任务");
 
-                synchronized (consumerLock){
-                    synchronized (mutexLock){
-                        taskQueue.push(taskGenerated);
-                        System.out.println("    Executor" + Thread.currentThread() + "：将第" + taskGenerated.getId() + "个任务加入Queue");
+                List<Task> taskGenerated = taskToExecute.getNextTasks();
+                synchronized (waitingTaskQueue){
+                    for (Task task : taskGenerated){
+                        waitingTaskQueue.push(task);
                     }
-                    consumerLock.notify();
-                    System.out.println("    Executor" + Thread.currentThread() + "：唤醒Controller...");
+                }
+
+                synchronized (waitingQueue){
+                    waitingQueue.notify();
                 }
             }
         });

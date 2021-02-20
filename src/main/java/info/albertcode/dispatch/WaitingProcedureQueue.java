@@ -11,11 +11,11 @@ import java.util.Queue;
  * @Description:
  * @Author: Albert Shen
  */
-@Service(value = "procedureQueue")
-public class ProcedureQueue {
+@Service(value = "waitingProcedureQueue")
+public class WaitingProcedureQueue {
     private Queue<Procedure> queue;
 
-    public ProcedureQueue() {
+    public WaitingProcedureQueue() {
         queue = new LinkedList<>();
     }
 
