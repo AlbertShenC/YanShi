@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
  * @Description:
  * @Author: Albert Shen
  */
-@Service(value = "timer")
-public class ProcedureTimer {
+@Service(value = "yanShiCoreTimer")
+public class YanShiCoreTimer {
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
     private ProcedureQueue procedureQueue;
     private MutexLock mutexLock;
@@ -19,7 +19,7 @@ public class ProcedureTimer {
     private TimerLock timerLock;
 
     @Autowired
-    public ProcedureTimer(ThreadPoolTaskExecutor threadPoolTaskExecutor, ProcedureQueue procedureQueue, MutexLock mutexLock, ConsumerLock consumerLock, TimerLock timerLock) {
+    public YanShiCoreTimer(ThreadPoolTaskExecutor threadPoolTaskExecutor, ProcedureQueue procedureQueue, MutexLock mutexLock, ConsumerLock consumerLock, TimerLock timerLock) {
         this.threadPoolTaskExecutor = threadPoolTaskExecutor;
         this.procedureQueue = procedureQueue;
         this.mutexLock = mutexLock;

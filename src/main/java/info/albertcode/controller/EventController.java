@@ -16,9 +16,12 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/event")
 public class EventController {
+    private IEventService eventService;
 
     @Autowired
-    private IEventService eventService;
+    public EventController(IEventService eventService) {
+        this.eventService = eventService;
+    }
 
     @RequestMapping(value = "/findByPage")
     public String findByPage(Model model){

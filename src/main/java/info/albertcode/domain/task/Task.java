@@ -108,7 +108,7 @@ public class Task {
                 ", preTask=" + preTask +
                 ", inputEventProperty='" + inputEventProperty + '\'' +
                 ", outputEvent=" + outputEvent +
-                ", nextTasks=" + nextTasks +
+                ", nextTasks.size()=" + nextTasks.size() +
                 '}';
     }
 }

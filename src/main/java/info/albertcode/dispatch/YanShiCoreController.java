@@ -9,18 +9,18 @@ import org.springframework.stereotype.Service;
  * @Description:
  * @Author: Albert Shen
  */
-@Service(value = "controller")
-public class ProcedureController {
+@Service(value = "yanShiCoreController")
+public class YanShiCoreController {
     private ProcedureQueue procedureQueue;
     private TaskQueue taskQueue;
-    private ProcedureTimer timer;
-    private TaskExecutor executor;
+    private YanShiCoreTimer timer;
+    private YanShiCoreExecutor executor;
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
     private MutexLock mutexLock; // 两个消息队列的同步锁
     private ConsumerLock consumerLock; // 通知Controller处理队列的信号量
 
     @Autowired
-    public ProcedureController(ProcedureQueue procedureQueue, TaskQueue taskQueue, ProcedureTimer timer, TaskExecutor executor, ThreadPoolTaskExecutor threadPoolTaskExecutor, MutexLock mutexLock, ConsumerLock consumerLock) {
+    public YanShiCoreController(ProcedureQueue procedureQueue, TaskQueue taskQueue, YanShiCoreTimer timer, YanShiCoreExecutor executor, ThreadPoolTaskExecutor threadPoolTaskExecutor, MutexLock mutexLock, ConsumerLock consumerLock) {
         this.procedureQueue = procedureQueue;
         this.taskQueue = taskQueue;
         this.timer = timer;

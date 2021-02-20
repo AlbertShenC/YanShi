@@ -1,6 +1,6 @@
 package info.albertcode.controller;
 
-import info.albertcode.dispatch.ProcedureController;
+import info.albertcode.dispatch.YanShiCoreController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/top")
 public class TopController {
-    ProcedureController procedureController;
+    YanShiCoreController procedureController;
 
     @Autowired
-    public TopController(ProcedureController procedureController) {
+    public TopController(YanShiCoreController procedureController) {
         this.procedureController = procedureController;
     }
 

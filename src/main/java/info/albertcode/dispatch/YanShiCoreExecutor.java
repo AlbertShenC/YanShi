@@ -9,15 +9,15 @@ import org.springframework.stereotype.Service;
  * @Description:
  * @Author: Albert Shen
  */
-@Service(value = "executor")
-public class TaskExecutor {
+@Service(value = "yanShiCoreExecutor")
+public class YanShiCoreExecutor {
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
     private TaskQueue taskQueue;
     private MutexLock mutexLock;
     private ConsumerLock consumerLock;
 
     @Autowired
-    public TaskExecutor(ThreadPoolTaskExecutor threadPoolTaskExecutor, TaskQueue taskQueue, MutexLock mutexLock, ConsumerLock consumerLock) {
+    public YanShiCoreExecutor(ThreadPoolTaskExecutor threadPoolTaskExecutor, TaskQueue taskQueue, MutexLock mutexLock, ConsumerLock consumerLock) {
         this.threadPoolTaskExecutor = threadPoolTaskExecutor;
         this.taskQueue = taskQueue;
         this.mutexLock = mutexLock;
