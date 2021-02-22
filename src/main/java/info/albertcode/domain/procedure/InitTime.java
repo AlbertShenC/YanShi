@@ -123,6 +123,9 @@ public class InitTime {
      */
     public LocalDateTime getNextExecuteDate(LocalDateTime lastExecuteDate){
         LocalDateTime nextExecuteDate;
+        if (lastExecuteDate == null){
+            lastExecuteDate = LocalDateTime.now();
+        }
         //todo：用户可以自定义当前时区
         if (minute != -1){
             if (hour != -1){
@@ -187,9 +190,23 @@ public class InitTime {
                     }
                 }
             } else { // 所有数据均无效
-                nextExecuteDate = null;
+                nextExecuteDate = LocalDateTime.now();
             }
         }
         return nextExecuteDate;
+    }
+
+    @Override
+    public String toString() {
+        return "InitTime{" +
+                "month=" + month +
+                ", day=" + day +
+                ", weekDay=" + weekDay +
+                ", hour=" + hour +
+                ", minute=" + minute +
+                ", dayInterval=" + dayInterval +
+                ", hourInterval=" + hourInterval +
+                ", minuteInterval=" + minuteInterval +
+                '}';
     }
 }

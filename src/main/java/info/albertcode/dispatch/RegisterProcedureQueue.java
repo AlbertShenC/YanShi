@@ -1,10 +1,10 @@
 package info.albertcode.dispatch;
 
 import info.albertcode.domain.procedure.Procedure;
-import info.albertcode.utils.constants.Setting;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedList;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 import java.util.Queue;
 
 /**
@@ -13,17 +13,26 @@ import java.util.Queue;
  */
 @Service(value = "registerProcedureQueue")
 public class RegisterProcedureQueue {
-    private Queue<Integer> queue;
+    private Queue<Procedure> queue;
 
     public RegisterProcedureQueue() {
-        queue = new LinkedList<>();
+        queue = new PriorityQueue<>(new Comparator<Procedure>() {
+            @Override
+            public int compare(Procedure o1, Procedure o2) {
+                if (o1.getExpectExecuteDateTime().isBefore(o2.getExpectExecuteDateTime())){
+                    return -1;
+                } else {
+                    return 1;
+                }
+            }
+        });
     }
 
-    public void push(Integer procedureId){
-        queue.offer(procedureId);
+    public void push(Procedure procedure){
+        queue.offer(procedure);
     }
 
-    public Integer pop(){
+    public Procedure pop(){
         if (queue.isEmpty()){
             return null;
         } else {
@@ -31,7 +40,7 @@ public class RegisterProcedureQueue {
         }
     }
 
-    public Integer top(){
+    public Procedure top(){
         if (queue.isEmpty()){
             return null;
         } else {

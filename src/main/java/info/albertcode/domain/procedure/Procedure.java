@@ -15,6 +15,7 @@ public class Procedure {
                             // 通过任务中的下一个任务列表来获取全部任务
     private InitTime initTime; // 定时启动时间/启动间隔
     private LocalDateTime lastExecuteDateTime; // 上一次申请开始执行的时间
+    private LocalDateTime expectExecuteDateTime; // 预计下一次执行时间
 
 
     public Integer getId() {
@@ -51,5 +52,27 @@ public class Procedure {
 
     public void setLastExecuteDateTime(LocalDateTime lastExecuteDateTime) {
         this.lastExecuteDateTime = lastExecuteDateTime;
+    }
+
+    public LocalDateTime getExpectExecuteDateTime() {
+        return expectExecuteDateTime;
+    }
+
+    public void setExpectExecuteDateTime(LocalDateTime expectExecuteDateTime) {
+        this.expectExecuteDateTime = expectExecuteDateTime;
+    }
+
+    public void calculateExpectExecuteDateTime() {
+        this.expectExecuteDateTime = this.initTime.getNextExecuteDate(this.lastExecuteDateTime);
+    }
+
+    @Override
+    public String toString() {
+        return "Procedure{" +
+                "id=" + id +
+                ", initTime=" + initTime +
+                ", lastExecuteDateTime=" + lastExecuteDateTime +
+                ", expectExecuteDateTime=" + expectExecuteDateTime +
+                '}';
     }
 }

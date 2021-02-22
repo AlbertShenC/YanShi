@@ -29,7 +29,6 @@ public class ProcedureController {
         procedure.setInitTime(new InitTime());
         procedure.setLastExecuteDateTime(LocalDateTime.now());
         procedureDao.saveProcedure(procedure);
-        procedureDao.saveInitTime(procedure.getId(), procedure.getInitTime());
         return "result";
     }
 }
