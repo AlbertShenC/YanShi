@@ -27,6 +27,8 @@
     <mvc:resources location="/images/" mapping="/images/**" />
     <mvc:resources location="/js/" mapping="/js/**" />
 
+    <bean id="handlerExceptionResolver" class="info.albertcode.controller.ExceptionController"></bean>
+
 <!--    开启SpringMVC注解支持-->
     <mvc:annotation-driven/>
 </beans>
