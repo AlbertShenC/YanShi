@@ -7,13 +7,12 @@ import info.albertcode.domain.event.Event;
 import info.albertcode.domain.event.StringParserEvent;
 import info.albertcode.domain.request.StringParserRequest;
 import info.albertcode.domain.task.Task;
-import info.albertcode.utils.json.KeyValues;
+import info.albertcode.utils.json.OneKeyManyValues;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.seimicrawler.xpath.JXDocument;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -35,7 +34,7 @@ public class StringParserTaskServiceImpl extends TaskWithInputEvent{
      * @param stringToParser 被解析的字符串
      * @return
      */
-    private static void executeCSS(String selector, String stringToParser, int keySubscript, KeyValues keyValues){
+    private static void executeCSS(String selector, String stringToParser, int keySubscript, OneKeyManyValues keyValues){
         Document document = Jsoup.parse(stringToParser);
         Elements cssElements = document.select(selector);
 
@@ -50,7 +49,7 @@ public class StringParserTaskServiceImpl extends TaskWithInputEvent{
      * @param stringToParser 被解析的字符串
      * @return
      */
-    private static void executeXpath(String xpath, String stringToParser, int keySubscript, KeyValues keyValues){
+    private static void executeXpath(String xpath, String stringToParser, int keySubscript, OneKeyManyValues keyValues){
         JXDocument jxDocument = JXDocument.create(stringToParser);
         List<Object> xpathElements = jxDocument.sel(xpath);
 
@@ -66,7 +65,7 @@ public class StringParserTaskServiceImpl extends TaskWithInputEvent{
      * @param groupNumber 需要获取的 group 下标
      * @return
      */
-    private static void executeRegex(String pattern, String stringToParser, Integer groupNumber, int keySubscript, KeyValues keyValues){
+    private static void executeRegex(String pattern, String stringToParser, Integer groupNumber, int keySubscript, OneKeyManyValues keyValues){
         Pattern r = Pattern.compile(pattern);
         Matcher matcher = r.matcher(stringToParser);
 
@@ -83,7 +82,7 @@ public class StringParserTaskServiceImpl extends TaskWithInputEvent{
 
         // 获取要封装的键值对，并根据request内容对输入event进行解析
         String[] keys = request.getHeader().split("&");
-        KeyValues keyValues = new KeyValues();
+        OneKeyManyValues keyValues = new OneKeyManyValues();
         for (String key : keys){
             keyValues.addKey(key);
         }

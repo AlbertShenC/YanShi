@@ -15,6 +15,7 @@ public interface IProcedureDao {
     @Select("select * from db_procedure where id = #{procedureId}")
     @Results(id = "relatedDate", value = {
             @Result(property = "id", column = "id"),
+            @Result(property = "name", column = "name"),
             @Result(property = "lastExecuteDateTime", column = "lastExecuteDateTime"),
             @Result(property = "initTime.month", column = "month"),
             @Result(property = "initTime.day", column = "day"),
@@ -31,7 +32,7 @@ public interface IProcedureDao {
     public Procedure findProcedureById(Integer procedureId);
 
     @Insert("<script> " +
-                "insert into db_procedure (" +
+                "insert into db_procedure (name, " +
                 "<if test = 'entryTask != null'>" +
                     "entryTaskId, " +
                 "</if>" +
@@ -39,7 +40,7 @@ public interface IProcedureDao {
                 "weekDay, hour, minute, " +
                 "dayInterval, hourInterval, " +
                 "minuteInterval) " +
-                "values (" +
+                "values (#{name}, " +
                 "<if test = 'entryTask != null'>" +
                     "#{entryTaskId}, " +
                 "</if>" +
@@ -54,6 +55,7 @@ public interface IProcedureDao {
 
     @Update("<script> " +
                 "update db_procedure set " +
+                "name = #{name}, " +
                 "<if test = 'entryTask != null'>" +
                     "entryTaskId = #{entryTaskId}, " +
                 "</if>" +

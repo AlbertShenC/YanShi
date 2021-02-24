@@ -11,13 +11,13 @@ import java.util.List;
  * @Author: Albert Shen
  */
 
-public class KeyValues {
+public class OneKeyManyValues {
     private List<String> keys;
     private List<List<Object>> valuesArray;
     private Integer numberOfKeys;
     private Integer maxNumberOfValues;
 
-    public KeyValues() {
+    public OneKeyManyValues() {
         keys = new ArrayList<String>();
         valuesArray = new ArrayList<>();
         numberOfKeys = 0;

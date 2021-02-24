@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 
 public class Procedure {
     private Integer id;
+    private String name;
     private Task entryTask; // 流程的入口任务，流程只记录自己的开始任务是什么
                             // 通过任务中的下一个任务列表来获取全部任务
     private InitTime initTime; // 定时启动时间/启动间隔
@@ -24,6 +25,14 @@ public class Procedure {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Task getEntryTask() {
