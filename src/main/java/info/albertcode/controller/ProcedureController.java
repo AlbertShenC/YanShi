@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @Description:
@@ -25,11 +26,21 @@ public class ProcedureController {
         this.procedureDao = procedureDao;
     }
 
-    //todo:Procedure展示页
-//    @GetMapping(value = "")
-//    public ModelAndView showAllProcedure() {
-//        ModelAndView modelAndView = new ModelAndView();
-//    }
+    @GetMapping(value = "")
+    public ModelAndView index() {
+        return showAllProcedure(0);
+    }
+
+    @GetMapping(value = "/{pageNum}")
+    public ModelAndView showAllProcedure(@PathVariable Integer pageNum) {
+        List<Procedure> procedureList = procedureDao.findProcedureByColumn(pageNum, 10);
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("title", "流程列表-第" + pageNum + "页");
+        modelAndView.addObject("procedureList", procedureList);
+        modelAndView.setViewName("/procedure/list");
+        return modelAndView;
+    }
 
     @GetMapping(value = "/edit")
     public ModelAndView getCreatePage() {
@@ -72,6 +83,7 @@ public class ProcedureController {
 
         OneKeyOneValue keyValue = new OneKeyOneValue();
         keyValue.addKeyValue("message", "success");
+        keyValue.addKeyValue("next_url", "/procedure");
         return keyValue.toJsonObject().toJSONString();
     }
 
@@ -89,6 +101,7 @@ public class ProcedureController {
 
         OneKeyOneValue keyValue = new OneKeyOneValue();
         keyValue.addKeyValue("message", "success");
+        keyValue.addKeyValue("next_url", "/procedure");
         return keyValue.toJsonObject().toJSONString();
     }
 }

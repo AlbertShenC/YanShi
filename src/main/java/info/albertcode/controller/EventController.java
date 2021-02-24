@@ -23,12 +23,4 @@ public class EventController {
         this.eventService = eventService;
     }
 
-    @RequestMapping(value = "/findByPage")
-    public String findByPage(Model model){
-        System.out.println("表现层，按页查询事件...");
-        List<Event> events = eventService.findByPage(0, 10);
-        System.out.println("表现层，按页查询事件完成...");
-        model.addAttribute("events", events);
-        return "event_list";
-    }
 }

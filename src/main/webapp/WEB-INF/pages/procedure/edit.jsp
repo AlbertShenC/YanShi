@@ -41,7 +41,11 @@
                         "initTime.minuteInterval": minuteInterval
                     },
                     success: function (data) {
-                        alert(data['message']);
+                        if (data['message'] == 'success'){
+                            window.location.href = data['next_url'];
+                        } else {
+                            alert(data['message']);
+                        }
                     },
                 });
             })

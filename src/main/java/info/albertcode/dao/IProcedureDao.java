@@ -1,10 +1,13 @@
 package info.albertcode.dao;
 
+import info.albertcode.domain.event.Event;
 import info.albertcode.domain.procedure.InitTime;
 import info.albertcode.domain.procedure.Procedure;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.mapping.FetchType;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @Description: initTime 与 Procedure 是强绑定状态，一一对应，故在数据库的结构上将其体现为一张表
@@ -32,7 +35,12 @@ public interface IProcedureDao {
     public Procedure findProcedureById(Integer procedureId);
 
     @Select("select * from db_procedure where entryTaskId = #{entryTaskId}")
+    @ResultMap(value = "relatedDate")
     public Procedure findProcedureWithEntryTask(Integer entryTaskId);
+
+    @Select("select * from db_procedure limit #{startNum}, #{totalNum}")
+    @ResultMap(value = "relatedDate")
+    public List<Procedure> findProcedureByColumn(@Param("startNum") Integer startNum, @Param("totalNum") Integer totalNum);
 
     @Insert("<script> " +
                 "insert into db_procedure (name, " +
