@@ -16,13 +16,8 @@ public class HttpRequestRequest extends Request{
     private String method; // 请求方法
     private String url; // 请求链接
 
-    public HttpRequestRequest() {
-        this.type = "HttpRequest";
-    }
-
     public HttpRequestRequest(Request request){
         this.setId(request.getId());
-        this.type = "HttpRequest";
         this.setOverview(request.getOverview());
         this.setHeader(request.getHeader());
         this.setBody(request.getBody());

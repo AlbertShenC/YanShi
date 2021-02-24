@@ -17,7 +17,7 @@ public class Task {
     protected ETaskType typeEnum; // 任务的种类
     protected String name; // 用户自定义任务的名称
     protected Request request; // 任务的请求
-    protected Task preTask; // 在此任务之前的任务，其输出事件也将作为此任务的输入事件使用
+    protected Task inputTask; // 在此任务之前的任务，其输出事件也将作为此任务的输入事件使用
     protected String inputEventProperty; // 具体获取输入事件的哪一个属性值，如Overview，Header，Body
     protected Event outputEvent; // 任务类的输出事件
     protected List<Task> nextTasks; // 下一个任务（可能包含多个）
@@ -66,16 +66,16 @@ public class Task {
         return request.getId();
     }
 
-    public Task getPreTask() {
-        return preTask;
+    public Task getInputTask() {
+        return inputTask;
     }
 
-    public void setPreTask(Task preTask) {
-        this.preTask = preTask;
+    public void setInputTask(Task inputTask) {
+        this.inputTask = inputTask;
     }
 
-    public Integer getPreTaskId() {
-        return preTask.getId();
+    public Integer getInputTaskId() {
+        return this.getInputTask().getId();
     }
 
     public String getInputEventProperty() {
@@ -95,7 +95,7 @@ public class Task {
     }
 
     public Integer getOutputEventId() {
-        return outputEvent.getId();
+        return this.getOutputEvent().getId();
     }
 
     public List<Task> getNextTasks() {
@@ -113,10 +113,10 @@ public class Task {
                 ", type='" + typeEnum + '\'' +
                 ", name='" + name + '\'' +
                 ", request=" + request +
-                ", preTask=" + preTask +
+                ", inputTask=" + inputTask +
                 ", inputEventProperty='" + inputEventProperty + '\'' +
                 ", outputEvent=" + outputEvent +
-                ", nextTasks.size()=" + nextTasks.size() +
+//                ", nextTasks.size()=" + nextTasks.size() +
                 '}';
     }
 }

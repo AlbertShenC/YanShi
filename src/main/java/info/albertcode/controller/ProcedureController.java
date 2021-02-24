@@ -1,7 +1,6 @@
 package info.albertcode.controller;
 
 import info.albertcode.dao.IProcedureDao;
-import info.albertcode.domain.procedure.InitTime;
 import info.albertcode.domain.procedure.Procedure;
 import info.albertcode.utils.exception.CustomException;
 import info.albertcode.utils.json.OneKeyOneValue;
@@ -26,9 +25,16 @@ public class ProcedureController {
         this.procedureDao = procedureDao;
     }
 
+    //todo:Procedure展示页
+//    @GetMapping(value = "")
+//    public ModelAndView showAllProcedure() {
+//        ModelAndView modelAndView = new ModelAndView();
+//    }
+
     @GetMapping(value = "/edit")
     public ModelAndView getCreatePage() {
         ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("title", "新建流程");
         modelAndView.addObject("isCreate", true);
         modelAndView.setViewName("/procedure/edit");
         return modelAndView;
@@ -42,6 +48,7 @@ public class ProcedureController {
         }
 
         ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("title", "修改流程");
         modelAndView.addObject("isCreate", false);
         modelAndView.addObject("procedureId", procedure.getId());
         modelAndView.addObject("name", procedure.getName());
@@ -59,21 +66,8 @@ public class ProcedureController {
 
     @PostMapping(value = "/edit")
     @ResponseBody
-    public String createProcedure(String name, Integer month, Integer day, Integer weekDay, Integer hour, Integer minute, Integer dayInterval, Integer hourInterval, Integer minuteInterval){
-        Procedure procedure = new Procedure();
-        InitTime initTime = new InitTime();
-        initTime.setMonth(month);
-        initTime.setDay(day);
-        initTime.setWeekDay(weekDay);
-        initTime.setHour(hour);
-        initTime.setMonth(minute);
-        initTime.setDayInterval(dayInterval);
-        initTime.setHourInterval(hourInterval);
-        initTime.setMinuteInterval(minuteInterval);
-        procedure.setName(name);
-        procedure.setInitTime(initTime);
+    public String createProcedure(Procedure procedure){
         procedure.setLastExecuteDateTime(LocalDateTime.now());
-
         procedureDao.saveProcedure(procedure);
 
         OneKeyOneValue keyValue = new OneKeyOneValue();
@@ -83,25 +77,15 @@ public class ProcedureController {
 
     @PutMapping(value = "/edit/{id}")
     @ResponseBody
-    public String updateProcedure(@PathVariable Integer id, String name, Integer month, Integer day, Integer weekDay, Integer hour, Integer minute, Integer dayInterval, Integer hourInterval, Integer minuteInterval) throws CustomException {
-        Procedure procedure = procedureDao.findProcedureById(id);
-        if (procedure == null){
+    public String updateProcedure(@PathVariable Integer id, Procedure procedure) throws CustomException {
+        Procedure procedureInDatabase = procedureDao.findProcedureById(id);
+        if (procedureInDatabase == null){
             throw new CustomException("不存在id为" + id + "的流程");
         }
 
-        InitTime initTime = procedure.getInitTime();
-        initTime.setMonth(month);
-        initTime.setDay(day);
-        initTime.setWeekDay(weekDay);
-        initTime.setHour(hour);
-        initTime.setMonth(minute);
-        initTime.setDayInterval(dayInterval);
-        initTime.setHourInterval(hourInterval);
-        initTime.setMinuteInterval(minuteInterval);
-        procedure.setName(name);
-        procedure.setInitTime(initTime);
+        procedure.setId(id);
+        procedure.setLastExecuteDateTime(procedureInDatabase.getLastExecuteDateTime());
         procedureDao.updateProcedure(procedure);
-        System.out.println(procedure);
 
         OneKeyOneValue keyValue = new OneKeyOneValue();
         keyValue.addKeyValue("message", "success");

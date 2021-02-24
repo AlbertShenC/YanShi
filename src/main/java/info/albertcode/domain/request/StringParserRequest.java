@@ -17,13 +17,8 @@ package info.albertcode.domain.request;
  */
 
 public class StringParserRequest extends Request{
-    public StringParserRequest(){
-        this.type = "StringParser";
-    }
-
     public StringParserRequest(Request request){
         this.setId(request.getId());
-        this.type = "StringParser";
         this.setOverview(request.getOverview());
         this.setHeader(request.getHeader());
         this.setBody(request.getBody());

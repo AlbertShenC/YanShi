@@ -20,7 +20,7 @@ public interface ITaskDao {
             @Result(property = "request", column = "requestId",
                     one = @One(select = "info.albertcode.dao.IRequestDao.findRequestById",
                            fetchType = FetchType.EAGER)),
-            @Result(property = "preTask", column = "preTaskId",
+            @Result(property = "inputTask", column = "inputTaskId",
                     one = @One(select = "info.albertcode.dao.ITaskDao.findTaskById",
                            fetchType = FetchType.LAZY)),
             @Result(property = "outputEvent", column = "outputEventId",
@@ -36,23 +36,29 @@ public interface ITaskDao {
     @ResultMap(value = "relatedData")
     public Task findTaskByName(String taskName);
 
-    @Select("select * from db_task where preTaskId = #{taskId}")
+    @Select("select * from db_task where inputTaskId = #{taskId}")
     @ResultMap(value = "relatedData")
     public List<Task> findSucceedingTasksOfSpecificTaskById(Integer taskId);
 
     @Insert("<script> " +
                 "insert into db_task " +
-                "(type, name, requestId, " +
-                "<if test = 'preTask != null'>" +
-                    "preTaskId, inputEventProperty, " +
+                "(type, name, requestId" +
+                "<if test = 'inputTask != null'>" +
+                    ", inputTaskId, inputEventProperty" +
                 "</if>" +
-                "outputEventId) " +
+                "<if test = 'outputEvent != null'>" +
+                    ", outputEventId" +
+                "</if>" +
+                ") " +
                 "values " +
-                "(#{type}, #{name}, #{requestId}, #" +
-                "<if test = 'preTask != null'>" +
-                    "{preTaskId}, #{inputEventProperty}, " +
+                "(#{type}, #{name}, #{requestId}" +
+                "<if test = 'inputTask != null'>" +
+                    ", #{inputTaskId}, #{inputEventProperty}" +
                 "</if>" +
-                "#{outputEventId}) " +
+                "<if test = 'outputEvent != null'>" +
+                    ", #{outputEventId}" +
+                "</if>" +
+                ") " +
             "</script>")
     @SelectKey(keyColumn = "id", keyProperty = "id", before = false,
             resultType = Integer.class, statement = {" select last_insert_id()"})
@@ -60,11 +66,13 @@ public interface ITaskDao {
 
     @Update("<script> " +
                 "update db_task set " +
-                "type = #{type}, name = #{name}, requestId = #{requestId}, " +
-                "<if test = 'preTask != null'>" +
-                    "preTaskId = #{preTaskId}, inputEventProperty = #{inputEventProperty}, " +
+                "type = #{type}, name = #{name}, requestId = #{requestId}" +
+                "<if test = 'inputTask != null'>" +
+                    ", inputTaskId = #{inputTaskId}, inputEventProperty = #{inputEventProperty}" +
                 "</if>" +
-                "outputEventId = #{outputEventId} " +
+                "<if test = 'outputEvent != null'>" +
+                    ", outputEventId = #{outputEventId} " +
+                "</if>" +
                 "where id = #{id} " +
             "</script>")
     public void updateTask(Task task);

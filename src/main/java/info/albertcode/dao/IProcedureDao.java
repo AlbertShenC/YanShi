@@ -31,6 +31,9 @@ public interface IProcedureDao {
     })
     public Procedure findProcedureById(Integer procedureId);
 
+    @Select("select * from db_procedure where entryTaskId = #{entryTaskId}")
+    public Procedure findProcedureWithEntryTask(Integer entryTaskId);
+
     @Insert("<script> " +
                 "insert into db_procedure (name, " +
                 "<if test = 'entryTask != null'>" +

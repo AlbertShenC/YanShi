@@ -20,13 +20,8 @@ public class RssGenerateRequest extends Request{
     private String channelUrl;
     private String channelDescription;
 
-    public RssGenerateRequest() {
-        this.type = "RssGenerate";
-    }
-
     public RssGenerateRequest(Request request){
         this.setId(request.getId());
-        this.type = "RssGenerate";
         this.setOverview(request.getOverview());
         this.setHeader(request.getHeader());
         this.setBody(request.getBody());

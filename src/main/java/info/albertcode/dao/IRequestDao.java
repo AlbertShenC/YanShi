@@ -22,8 +22,8 @@ public interface IRequestDao {
     /**
      * 保存一个新增request
      */
-    @Insert("insert into db_request (type, overview, header, body) " +
-            "VALUES (#{type}, #{overview}, #{header}, #{body})")
+    @Insert("insert into db_request (overview, header, body) " +
+            "VALUES (#{overview}, #{header}, #{body})")
     @SelectKey(keyColumn = "id", keyProperty = "id", before = false,
             resultType = Integer.class, statement = {" select last_insert_id()"})
     public void saveRequest(Request request);
@@ -32,7 +32,7 @@ public interface IRequestDao {
      * 更新一个已有的request
      */
     @Update("update db_request set " +
-            "type = #{type}, overview = #{overview}, " +
+            "overview = #{overview}, " +
             "header = #{header}, body = #{body} " +
             "where id = #{id}")
     public void updateRequest(Request request);

@@ -10,7 +10,7 @@ import info.albertcode.domain.task.Task;
 
 public class TaskWithInputEvent {
     protected static String getInputEventString(Task task){
-        Event inputEvent = task.getPreTask().getOutputEvent();
+        Event inputEvent = task.getInputTask().getOutputEvent();
         String stringToParser = null;
         switch (task.getInputEventProperty()){
             case "overview":

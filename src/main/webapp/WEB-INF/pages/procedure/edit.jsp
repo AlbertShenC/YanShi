@@ -2,29 +2,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>
-        <c:choose>
-            <c:when test="${isCreate == true}">
-                新建流程
-            </c:when>
-            <c:otherwise>
-                修改流程
-            </c:otherwise>
-        </c:choose>
-    </title>
-    <script type="text/javascript" src="/js/jquery/jquery.min.js"></script>
+    <%@include file="../header.jsp"%>
     <script type="text/javascript">
         $(function () {
             $("#submit").click(function () {
                 let name = $("#name").val();
-                let month = $("#month").val();
-                let day = $("#day").val();
-                let weekDay = $("#weekDay").val();
-                let hour = $("#hour").val();
-                let minute = $("#minute").val();
-                let dayInterval = $("#dayInterval").val();
-                let hourInterval = $("#hourInterval").val();
-                let minuteInterval = $("#minuteInterval").val();
+                let month = parseInt($("#month").val());
+                let day = parseInt($("#day").val());
+                let weekDay = parseInt($("#weekDay").val());
+                let hour = parseInt($("#hour").val());
+                let minute = parseInt($("#minute").val());
+                let dayInterval = parseInt($("#dayInterval").val());
+                let hourInterval = parseInt($("#hourInterval").val());
+                let minuteInterval = parseInt($("#minuteInterval").val());
                 $.ajax({
                     type: "POST",
                     dataType: "json",
@@ -41,14 +31,14 @@
                         "_method": "put",
                         </c:if>
                         "name": name,
-                        "month": month,
-                        "day": day,
-                        "weekDay": weekDay,
-                        "hour": hour,
-                        "minute": minute,
-                        "dayInterval": dayInterval,
-                        "hourInterval": hourInterval,
-                        "minuteInterval": minuteInterval
+                        "initTime.month": month,
+                        "initTime.day": day,
+                        "initTime.weekDay": weekDay,
+                        "initTime.hour": hour,
+                        "initTime.minute": minute,
+                        "initTime.dayInterval": dayInterval,
+                        "initTime.hourInterval": hourInterval,
+                        "initTime.minuteInterval": minuteInterval
                     },
                     success: function (data) {
                         alert(data['message']);
@@ -59,7 +49,7 @@
     </script>
 </head>
 <body>
-    <form id="update">
+    <form>
         <p>流程名<input id="name" type="text" value="${name}"></p>
         <p>启动时间</p>
         <p>month<input id="month" type="text" value="${month}"></p>
