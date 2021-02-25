@@ -44,7 +44,7 @@ public class Procedure {
     }
 
     public Integer getEntryTaskId() {
-        return entryTask.getId();
+        return this.getEntryTask().getId();
     }
 
     public InitTime getInitTime() {
@@ -67,18 +67,16 @@ public class Procedure {
         return expectExecuteDateTime;
     }
 
-    public void setExpectExecuteDateTime(LocalDateTime expectExecuteDateTime) {
-        this.expectExecuteDateTime = expectExecuteDateTime;
-    }
-
     public void calculateExpectExecuteDateTime() {
-        this.expectExecuteDateTime = this.initTime.getNextExecuteDate(this.lastExecuteDateTime);
+        this.expectExecuteDateTime = this.getInitTime().getNextExecuteDate(this.getLastExecuteDateTime());
     }
 
     @Override
     public String toString() {
         return "Procedure{" +
                 "id=" + id +
+                ", name='" + name + '\'' +
+                ", entryTask=" + entryTask +
                 ", initTime=" + initTime +
                 ", lastExecuteDateTime=" + lastExecuteDateTime +
                 ", expectExecuteDateTime=" + expectExecuteDateTime +

@@ -29,7 +29,7 @@ public class HttpRequestRequest extends Request{
 
     public void setMethod(String method) {
         this.method = method;
-        this.overview = this.method + " " + this.url;
+        this.setOverview(this.method + " " + this.url);
     }
 
     public String getUrl() {
@@ -38,13 +38,13 @@ public class HttpRequestRequest extends Request{
 
     public void setUrl(String url) {
         this.url = url;
-        this.overview = this.method + " " + this.url;
+        this.setOverview(this.method + " " + this.url);
     }
 
     public void setOverview(String method, String url){
         this.method = method;
         this.url = url;
-        this.overview = this.method + " " + this.url;
+        this.setOverview(this.method + " " + this.url);
     }
 
     /**

@@ -33,8 +33,8 @@ public class RssGenerateRequest extends Request{
 
     public void setTitleAlias(String titleAlias) {
         this.titleAlias = titleAlias;
-        this.header = this.titleAlias + "&" + this.authorAlias + "&"
-                + this.textAlias + "&" + this.urlAlias;
+        this.setHeader(this.titleAlias + "&" + this.authorAlias + "&"
+                + this.textAlias + "&" + this.urlAlias);
     }
 
     public String getAuthorAlias() {
@@ -43,8 +43,8 @@ public class RssGenerateRequest extends Request{
 
     public void setAuthorAlias(String authorAlias) {
         this.authorAlias = authorAlias;
-        this.header = this.titleAlias + "&" + this.authorAlias + "&"
-                + this.textAlias + "&" + this.urlAlias;
+        this.setHeader(this.titleAlias + "&" + this.authorAlias + "&"
+                + this.textAlias + "&" + this.urlAlias);
     }
 
     public String getTextAlias() {
@@ -53,8 +53,8 @@ public class RssGenerateRequest extends Request{
 
     public void setTextAlias(String textAlias) {
         this.textAlias = textAlias;
-        this.header = this.titleAlias + "&" + this.authorAlias + "&"
-                + this.textAlias + "&" + this.urlAlias;
+        this.setHeader(this.titleAlias + "&" + this.authorAlias + "&"
+                + this.textAlias + "&" + this.urlAlias);
     }
 
     public String getUrlAlias() {
@@ -63,8 +63,8 @@ public class RssGenerateRequest extends Request{
 
     public void setUrlAlias(String urlAlias) {
         this.urlAlias = urlAlias;
-        this.header = this.titleAlias + "&" + this.authorAlias + "&"
-                + this.textAlias + "&" + this.urlAlias;
+        this.setHeader(this.titleAlias + "&" + this.authorAlias + "&"
+                + this.textAlias + "&" + this.urlAlias);
     }
 
     public void setHeader(String titleAlias, String authorAlias,
@@ -73,14 +73,14 @@ public class RssGenerateRequest extends Request{
         this.authorAlias = authorAlias;
         this.textAlias = textAlias;
         this.urlAlias = urlAlias;
-        this.header = this.titleAlias + "&" + this.authorAlias + "&"
-                + this.textAlias + "&" + this.urlAlias;
+        this.setHeader(this.titleAlias + "&" + this.authorAlias + "&"
+                + this.textAlias + "&" + this.urlAlias);
     }
 
     @Override
     public void setHeader(String header){
         String[] values = header.split("&");
-        setHeader(values[0], values[1], values[2], values[3]);
+        this.setHeader(values[0], values[1], values[2], values[3]);
     }
 
     public String getChannelTitle() {
@@ -89,7 +89,8 @@ public class RssGenerateRequest extends Request{
 
     public void setChannelTitle(String channelTitle) {
         this.channelTitle = channelTitle;
-        this.body = this.channelTitle + "&" + this.channelUrl + this.channelDescription;
+        this.setBody(this.channelTitle + "&" + this.channelUrl + "&"
+                + this.channelDescription);
     }
 
     public String getChannelUrl() {
@@ -98,7 +99,8 @@ public class RssGenerateRequest extends Request{
 
     public void setChannelUrl(String channelUrl) {
         this.channelUrl = channelUrl;
-        this.body = this.channelTitle + "&" + this.channelUrl + this.channelDescription;
+        this.setBody(this.channelTitle + "&" + this.channelUrl + "&"
+                + this.channelDescription);
     }
 
     public String getChannelDescription() {
@@ -107,14 +109,16 @@ public class RssGenerateRequest extends Request{
 
     public void setChannelDescription(String channelDescription) {
         this.channelDescription = channelDescription;
-        this.body = this.channelTitle + "&" + this.channelUrl + this.channelDescription;
+        this.setBody(this.channelTitle + "&" + this.channelUrl + "&"
+                + this.channelDescription);
     }
 
     public void setBody(String channelTitle, String channelUrl, String channelDescription){
         this.channelTitle = channelTitle;
         this.channelUrl = channelUrl;
         this.channelDescription = channelDescription;
-        this.body = this.channelTitle + "&" + this.channelUrl + this.channelDescription;
+        this.setBody(this.channelTitle + "&" + this.channelUrl + "&"
+                + this.channelDescription);
     }
 
     @Override

@@ -28,8 +28,8 @@ public class CustomPageController {
         if (event == null){
             return "error";
         }
-        switch (event.getType()){
-            case "RegisterForWebPage":
+        switch (event.getTypeEnum()){
+            case RssGenerate:
                 return event.getBody();
             default:
                 return "error";

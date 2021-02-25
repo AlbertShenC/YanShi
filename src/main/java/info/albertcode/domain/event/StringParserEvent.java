@@ -13,8 +13,7 @@ import java.util.List;
 
 public class StringParserEvent extends Event{
     public StringParserEvent(String body){
-        this.type = "StringParser";
-        this.generatedTime = new Date();
-        this.body = body;
+        this.setGeneratedTime(new Date());
+        this.setBody(body);
     }
 }

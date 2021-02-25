@@ -9,6 +9,6 @@ import info.albertcode.utils.enums.ETaskType;
 
 public class StringParserTask extends Task{
     public StringParserTask() {
-        this.typeEnum = ETaskType.StringParser;
+        this.setTypeEnum(ETaskType.StringParser);
     }
 }

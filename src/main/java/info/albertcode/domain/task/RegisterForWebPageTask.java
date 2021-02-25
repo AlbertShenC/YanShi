@@ -9,6 +9,6 @@ import info.albertcode.utils.enums.ETaskType;
 
 public class RegisterForWebPageTask extends Task{
     public RegisterForWebPageTask() {
-        this.typeEnum = ETaskType.RegisterForWebPage;
+        this.setTypeEnum(ETaskType.RegisterForWebPage);
     }
 }

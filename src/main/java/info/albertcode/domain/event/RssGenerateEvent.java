@@ -9,8 +9,7 @@ import java.util.Date;
 
 public class RssGenerateEvent extends Event{
     public RssGenerateEvent(String body) {
-        this.type = "RssGenerate";
-        this.generatedTime = new Date();
-        this.body = body;
+        this.setGeneratedTime(new Date());
+        this.setBody(body);
     }
 }

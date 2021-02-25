@@ -15,18 +15,30 @@ import java.util.List;
 public interface IEventDao {
 
     /**
-     * 查询 [startNum, startNum + totalNum) 行数据
-     * @return 查询到的事件list
-     */
-    @Select("select * from db_event limit #{startNum}, #{totalNum}")
-    public List<Event> findEventByColumn(@Param("startNum") Integer startNum, @Param("totalNum") Integer totalNum);
-
-    /**
      * 获取 id值 为传入参数 id 的行
      * @return 查询到的事件
      */
-    @Select("select * from db_event where id = #{id}")
+    @Select("select id, generatedTime, belongedTaskName, successful, type, " +
+            "overview, header, body from db_event where id = #{id}")
+    @Results(id = "relatedData", value = {
+            @Result(property = "id", column = "id"),
+            @Result(property = "generatedTime", column = "generatedTime"),
+            @Result(property = "belongedTaskName", column = "belongedTaskName"),
+            @Result(property = "successful", column = "successful"),
+            @Result(property = "type", column = "type"),
+            @Result(property = "overview", column = "overview"),
+            @Result(property = "header", column = "header"),
+            @Result(property = "body", column = "body")
+    })
     public Event findEventById(Integer id);
+
+    /**
+     * 获取事件列表，返回 [startNum, startNum + totalNum) 行数据
+     * @return 一个列表，其 size 范围为 [0, totalNum]
+     */
+    @Select("select * from db_event limit #{startNum}, #{totalNum}")
+    @ResultMap(value = "relatedData")
+    public List<Event> findEventByColumn(@Param("startNum") Integer startNum, @Param("totalNum") Integer totalNum);
 
     @Insert("insert into db_event " +
             "(generatedTime, belongedTaskName, successful, type, " +

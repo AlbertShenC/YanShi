@@ -9,6 +9,6 @@ import info.albertcode.utils.enums.ETaskType;
 
 public class HttpRequestTask extends Task{
     public HttpRequestTask() {
-        this.typeEnum = ETaskType.HttpRequest;
+        this.setTypeEnum(ETaskType.HttpRequest);
     }
 }

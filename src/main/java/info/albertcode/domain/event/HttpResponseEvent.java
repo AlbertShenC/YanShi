@@ -13,8 +13,7 @@ public class HttpResponseEvent extends Event{
     private String reasonPhrase; // 服务器返回的状态代码的描述 OK
 
     public HttpResponseEvent() {
-        this.type = "HttpResponse";
-        this.generatedTime = new Date();
+        this.setGeneratedTime(new Date());
     }
 
     public String getHttpVersion() {
@@ -23,8 +22,8 @@ public class HttpResponseEvent extends Event{
 
     public void setHttpVersion(String httpVersion) {
         this.httpVersion = httpVersion;
-        this.overview = this.httpVersion + " " + this.statusCode
-                + " " + this.reasonPhrase;
+        this.setOverview(this.httpVersion + " " + this.statusCode
+                + " " + this.reasonPhrase);
     }
 
     public String getStatusCode() {
@@ -33,8 +32,8 @@ public class HttpResponseEvent extends Event{
 
     public void setStatusCode(String statusCode) {
         this.statusCode = statusCode;
-        this.overview = this.httpVersion + " " + this.statusCode
-                + " " + this.reasonPhrase;
+        this.setOverview(this.httpVersion + " " + this.statusCode
+                + " " + this.reasonPhrase);
     }
 
     public String getReasonPhrase() {
@@ -43,16 +42,16 @@ public class HttpResponseEvent extends Event{
 
     public void setReasonPhrase(String reasonPhrase) {
         this.reasonPhrase = reasonPhrase;
-        this.overview = this.httpVersion + " " + this.statusCode
-                + " " + this.reasonPhrase;
+        this.setOverview(this.httpVersion + " " + this.statusCode
+                + " " + this.reasonPhrase);
     }
 
     public void setOverview(String httpVersion, String statusCode, String reasonPhrase){
         this.httpVersion = httpVersion;
         this.statusCode = statusCode;
         this.reasonPhrase = reasonPhrase;
-        this.overview = this.httpVersion + " " + this.statusCode
-                + " " + this.reasonPhrase;
+        this.setOverview(this.httpVersion + " " + this.statusCode
+                + " " + this.reasonPhrase);
     }
 
     public void setOverview(String overview){

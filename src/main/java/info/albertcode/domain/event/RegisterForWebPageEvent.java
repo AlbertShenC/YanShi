@@ -15,16 +15,14 @@ import java.util.Date;
 
 public class RegisterForWebPageEvent extends Event{
     public RegisterForWebPageEvent(String body) {
-        this.type = "RegisterForWebPage";
-        this.generatedTime = new Date();
-        this.body = body;
+        this.setGeneratedTime(new Date());
+        this.setBody(body);
     }
 
     public RegisterForWebPageEvent(Event event) {
         this.setId(event.getId());
         this.setBelongedTaskName(event.getBelongedTaskName());
         this.setGeneratedTime(new Date());
-        this.setType("RegisterForWebPage");
         this.setOverview(event.getOverview());
         this.setHeader(event.getHeader());
         this.setBody(event.getBody());

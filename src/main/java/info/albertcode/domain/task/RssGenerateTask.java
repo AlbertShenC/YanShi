@@ -9,6 +9,6 @@ import info.albertcode.utils.enums.ETaskType;
 
 public class RssGenerateTask extends Task{
     public RssGenerateTask() {
-        this.typeEnum = ETaskType.RssGenerate;
+        this.setTypeEnum(ETaskType.RssGenerate);
     }
 }
