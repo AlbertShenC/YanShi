@@ -10,7 +10,7 @@ import info.albertcode.service.ITaskService;
 import info.albertcode.utils.Number;
 import info.albertcode.utils.enums.ETaskType;
 import info.albertcode.utils.exception.CustomException;
-import info.albertcode.utils.pair.impl.OneKeyOneValue;
+import info.albertcode.utils.pair.OneKeyOneValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

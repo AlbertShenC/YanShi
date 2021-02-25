@@ -1,7 +1,6 @@
 package info.albertcode;
 
-import info.albertcode.utils.pair.IKeyValue;
-import info.albertcode.utils.pair.impl.OneKeyManyValues;
+import info.albertcode.utils.pair.OneKeyManyValues;
 
 /**
  * @Description:
@@ -10,7 +9,7 @@ import info.albertcode.utils.pair.impl.OneKeyManyValues;
 
 public class TempTest {
     public static void main(String[] args) {
-        IKeyValue keyValue = new OneKeyManyValues();
+        OneKeyManyValues keyValue = new OneKeyManyValues();
         keyValue.addKey("sex");
         keyValue.addValue("name", "Albert");
         keyValue.addValue("name", "Shen");
@@ -21,8 +20,8 @@ public class TempTest {
         keyValue.addValue("age", 10);
         keyValue.addValue("name", "Code");
         keyValue.addValue("sex", "男");
-        System.out.println(keyValue.toJsonString());
+        System.out.println(keyValue.toJsonStringByGroup());
 
-        System.out.println(new OneKeyManyValues(keyValue.toJsonString()));
+        System.out.println(new OneKeyManyValues(keyValue.toJsonStringByGroup()));
     }
 }

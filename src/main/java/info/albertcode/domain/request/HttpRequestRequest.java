@@ -1,23 +1,24 @@
 package info.albertcode.domain.request;
 
-import info.albertcode.utils.pair.impl.OneKeyOneValue;
+import info.albertcode.utils.pair.OneKeyOneValue;
 
 /**
  * @Description: 发起 HTTPRequest 的请求，
- *      overview 包括请求方法（method）与请求链接（url）两部分
- *      其中，get请求的 url 是不包括 query 部分的，是被写在 body 内，
+ *      其中，get请求的 url 是不包括 query 部分的，这部分被写在 body 内，
  *      目的是为了和 post 方法保持一致，从而使用同一个执行方法。
  *      如对于 get https://www.baidu.com/s?ie=UTF-8&wd=albert，储存形式为
- *      overview：get https://www.baidu.com/s
+ *      overview：{"method":"get","url":"https://www.cnblogs.com/"}
+ *      body：{"ie":"UTF-8","wd":"albert"}
  * @Author: Albert Shen
  */
 
 public class HttpRequestRequest extends Request{
     // 包括请求方法（method），请求链接（url），代理ip（proxyDomain），代理端口（proxyPort）
+    // 其中 proxyPort 使用整型（Integer），其他三个部分使用字符串（String）
     private OneKeyOneValue keyValueOverview;
     // http 请求的头部，包括任意多个键值对
     private OneKeyOneValue keyValueHeader;
-    // http 请求的主体，包括任意多个键值对
+    // http 请求的主体，对于get请求为query部分，对于post请求为请求体，包括任意多个键值对
     private OneKeyOneValue keyValueBody;
 
     public HttpRequestRequest(Request request){
@@ -56,11 +57,11 @@ public class HttpRequestRequest extends Request{
         this.overview = keyValueOverview.toJsonString();
     }
 
-    public String getProxyPort() {
-        return (String) keyValueOverview.getValue("proxyPort");
+    public Integer getProxyPort() {
+        return (Integer) keyValueOverview.getValue("proxyPort");
     }
 
-    public void setProxyPort(String proxyPort) {
+    public void setProxyPort(Integer proxyPort) {
         keyValueOverview.addValue("proxyPort", proxyPort);
         this.overview = keyValueOverview.toJsonString();
     }
@@ -79,12 +80,14 @@ public class HttpRequestRequest extends Request{
         this.overview = keyValueOverview.toJsonString();
     }
 
-    /**
-     * 仅提供一个字符串时，将其拆分为 method 与 url
-     */
     @Override
     public void setOverview(String overview){
         keyValueOverview = new OneKeyOneValue(overview);
+        this.overview = keyValueOverview.toJsonString();
+    }
+
+    public void setOverview(OneKeyOneValue keyValueOverview){
+        this.keyValueOverview = keyValueOverview;
         this.overview = keyValueOverview.toJsonString();
     }
 
@@ -106,6 +109,11 @@ public class HttpRequestRequest extends Request{
         this.header = keyValueHeader.toJsonString();
     }
 
+    public void setHeader(OneKeyOneValue keyValueHeader) {
+        this.keyValueHeader = keyValueHeader;
+        this.header = keyValueHeader.toJsonString();
+    }
+
     // Body 相关操作
 
     public void addBody(String key, String value) {
@@ -121,6 +129,11 @@ public class HttpRequestRequest extends Request{
     @Override
     public void setBody(String body) {
         keyValueBody = new OneKeyOneValue(body);
+        this.body = keyValueBody.toJsonString();
+    }
+
+    public void setBody(OneKeyOneValue keyValueBody) {
+        this.keyValueBody = keyValueBody;
         this.body = keyValueBody.toJsonString();
     }
 }

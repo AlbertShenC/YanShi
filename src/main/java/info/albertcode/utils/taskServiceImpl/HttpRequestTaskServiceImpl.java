@@ -6,13 +6,12 @@ import info.albertcode.domain.request.HttpRequestRequest;
 import info.albertcode.domain.task.Task;
 import info.albertcode.utils.http.director.Director;
 import info.albertcode.utils.http.domain.HttpRequestAndResponse;
-import info.albertcode.utils.pair.impl.OneKeyOneValue;
+import info.albertcode.utils.pair.OneKeyOneValue;
 import org.apache.http.NameValuePair;
 
 import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @Description:
@@ -29,8 +28,16 @@ public class HttpRequestTaskServiceImpl {
         Director director = new Director(request.getMethod())
                 .uri(request.getUrl());
 
+        if (request.getProxyPort() != null){
+            if (request.getProxyDomain() != null) {
+                director.proxy(request.getProxyDomain(), request.getProxyPort());
+            } else {
+                director.proxy(request.getProxyPort());
+            }
+        }
+
         OneKeyOneValue headers = new OneKeyOneValue(request.getHeader());
-        Iterator<String> iteratorHeader = headers.getAllKeys().iterator();
+        Iterator<String> iteratorHeader = headers.getKeyIterator();
         while (iteratorHeader.hasNext()) {
             String key = iteratorHeader.next();
             String value = (String) headers.getValue(key);
@@ -38,7 +45,7 @@ public class HttpRequestTaskServiceImpl {
         }
 
         OneKeyOneValue parameters = new OneKeyOneValue(request.getBody());
-        Iterator<String> iteratorParameter = parameters.getAllKeys().iterator();
+        Iterator<String> iteratorParameter = parameters.getKeyIterator();
         while (iteratorParameter.hasNext()){
             String key = iteratorHeader.next();
             String value = (String) headers.getValue(key);
@@ -63,7 +70,7 @@ public class HttpRequestTaskServiceImpl {
         for (NameValuePair responseHeader : responseHeaders){
             resultHeaders.addValue(responseHeader.getName(), responseHeader.getValue());
         }
-        event.setHeader(resultHeaders.toJsonString());
+        event.setHeader(resultHeaders);
 
         event.setBody(requestAndResponse.getResponseEntity());
         return event;

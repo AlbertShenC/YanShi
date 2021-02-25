@@ -3,7 +3,7 @@ package info.albertcode.controller;
 import info.albertcode.dao.IProcedureDao;
 import info.albertcode.domain.procedure.Procedure;
 import info.albertcode.utils.exception.CustomException;
-import info.albertcode.utils.pair.impl.OneKeyOneValue;
+import info.albertcode.utils.pair.OneKeyOneValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

@@ -7,14 +7,16 @@ import info.albertcode.domain.event.Event;
 import info.albertcode.domain.event.StringParserEvent;
 import info.albertcode.domain.request.StringParserRequest;
 import info.albertcode.domain.task.Task;
-import info.albertcode.utils.pair.impl.OneKeyManyValues;
+import info.albertcode.utils.pair.OneKeyManyValues;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.seimicrawler.xpath.JXDocument;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -79,6 +81,13 @@ public class StringParserTaskServiceImpl extends TaskWithInputEvent{
         // 获取到任务所对应的request与 要处理的输入event字符串
         StringParserRequest request = prepareRequest(task);
         String stringToParser = getInputEventString(task);
+
+        // 获取解析语句迭代器
+        Iterator<Map.Entry<String, List<Object>>> bodyIterator = request.getBodyIterator();
+        while (bodyIterator.hasNext()){
+            Map.Entry<String, List<Object>> entry = bodyIterator.next();
+            switch (entry.getKey())
+        }
 
         // 获取要封装的键值对，并根据request内容对输入event进行解析
         String[] keys = request.getHeader().split("&");

@@ -1,8 +1,7 @@
-package info.albertcode.utils.pair.impl;
+package info.albertcode.utils.pair;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import info.albertcode.utils.pair.IKeyValue;
 
 import java.util.*;
 
@@ -11,11 +10,11 @@ import java.util.*;
  * @Author: Albert Shen
  */
 
-public class OneKeyOneValue implements IKeyValue {
+public class OneKeyOneValue {
     private Map<String, Object> keyValue;
 
     public OneKeyOneValue() {
-        keyValue = new HashMap<>();
+        keyValue = new LinkedHashMap<>();
     }
 
     public OneKeyOneValue(String jsonString){
@@ -29,9 +28,16 @@ public class OneKeyOneValue implements IKeyValue {
         }
     }
 
-    @Override
-    public Set<String> getAllKeys() {
-        return keyValue.keySet();
+    public Iterator<String> getKeyIterator() {
+        return keyValue.keySet().iterator();
+    }
+
+    /**
+     * 应该接收的类型：Iterator<Map.Entry<String, Object>>
+     * @return
+     */
+    public Iterator<Map.Entry<String, Object>> getIterator() {
+        return keyValue.entrySet().iterator();
     }
 
     public Object getValue(String key){
@@ -42,7 +48,6 @@ public class OneKeyOneValue implements IKeyValue {
      * 若存在指定键值对，则不作操作，反之将值设置为空字符串插入
      * @param key
      */
-    @Override
     public Integer addKey(String key) {
         keyValue.putIfAbsent(key, "");
         return keyValue.size();
@@ -51,7 +56,6 @@ public class OneKeyOneValue implements IKeyValue {
     /**
      * 若原本存在对应键，则替换为传入的键值对，反之直接添加传入键值对
      */
-    @Override
     public Integer addValue(String key, Object value) {
         keyValue.put(key, value);
         return keyValue.size();
@@ -60,7 +64,6 @@ public class OneKeyOneValue implements IKeyValue {
     /**
      * 删除指定键及其对应的值
      */
-    @Override
     public Integer deleteKey(String key) {
         keyValue.remove(key);
         return keyValue.size();
@@ -69,23 +72,19 @@ public class OneKeyOneValue implements IKeyValue {
     /**
      * 只有当键值对均与传入参数相同时，才删除键值对
      */
-    @Override
     public Integer deleteValue(String key, Object value) {
         keyValue.remove(key, value);
         return keyValue.size();
     }
 
-    @Override
     public void clear() {
         keyValue.clear();
     }
 
-    @Override
     public Integer size() {
         return keyValue.size();
     }
 
-    @Override
     public String toJsonString() {
         JSONObject jsonObject = new JSONObject();
         Iterator<String> iterator = keyValue.keySet().iterator();
