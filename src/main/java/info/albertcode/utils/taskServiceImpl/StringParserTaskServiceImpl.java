@@ -7,7 +7,7 @@ import info.albertcode.domain.event.Event;
 import info.albertcode.domain.event.StringParserEvent;
 import info.albertcode.domain.request.StringParserRequest;
 import info.albertcode.domain.task.Task;
-import info.albertcode.utils.json.OneKeyManyValues;
+import info.albertcode.utils.pair.OneKeyManyValues;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -131,7 +131,6 @@ public class StringParserTaskServiceImpl extends TaskWithInputEvent{
             default:
                 //todo:自定义异常
         }
-        JSONArray resultArray = keyValues.toJSONArray();
-        return new StringParserEvent(resultArray.toJSONString());
+        return new StringParserEvent(keyValues.toJsonString());
     }
 }

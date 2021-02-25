@@ -10,13 +10,11 @@ import info.albertcode.service.ITaskService;
 import info.albertcode.utils.Number;
 import info.albertcode.utils.enums.ETaskType;
 import info.albertcode.utils.exception.CustomException;
-import info.albertcode.utils.json.OneKeyOneValue;
+import info.albertcode.utils.pair.impl.OneKeyOneValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.List;
 
 /**
  * @Description:
@@ -93,8 +91,8 @@ public class TaskController {
             System.out.println("无数字，错误");
         }
         OneKeyOneValue keyValue = new OneKeyOneValue();
-        keyValue.addKeyValue("message", "success");
-        return keyValue.toJsonObject().toJSONString();
+        keyValue.addValue("message", "success");
+        return keyValue.toJsonString();
     }
 
     @PutMapping(value = "/edit/{id}")
@@ -118,8 +116,8 @@ public class TaskController {
             System.out.println("无数字，错误");
         }
         OneKeyOneValue keyValue = new OneKeyOneValue();
-        keyValue.addKeyValue("message", "success");
-        return keyValue.toJsonObject().toJSONString();
+        keyValue.addValue("message", "success");
+        return keyValue.toJsonString();
     }
 
     @RequestMapping("/execute")

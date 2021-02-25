@@ -1,10 +1,8 @@
 package info.albertcode;
 
-import info.albertcode.domain.procedure.InitTime;
-import info.albertcode.utils.enums.ETaskType;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import info.albertcode.utils.pair.IKeyValue;
+import info.albertcode.utils.pair.OneKeyManyValues;
+import info.albertcode.utils.pair.impl.OneKeyOneValue;
 
 /**
  * @Description:
@@ -13,11 +11,19 @@ import java.time.format.DateTimeFormatter;
 
 public class TempTest {
     public static void main(String[] args) {
-        ETaskType type = ETaskType.RssGenerate;
+        IKeyValue keyValue = new OneKeyManyValues();
+        keyValue.addKey("sex");
+        keyValue.addValue("name", "Albert");
+        keyValue.addValue("name", "Shen");
+        keyValue.addValue("sex", "male");
+        keyValue.addValue("sex", "female");
+        keyValue.addKey("age");
+        keyValue.addValue("age", 20);
+        keyValue.addValue("age", 10);
+        keyValue.addValue("name", "Code");
+        keyValue.addValue("sex", "男");
+        System.out.println(keyValue.toJsonString());
 
-        for (ETaskType e: ETaskType.values()){
-            System.out.println(e);
-            System.out.println(e.getValue());
-        }
+        System.out.println(new OneKeyManyValues(keyValue.toJsonString()));
     }
 }

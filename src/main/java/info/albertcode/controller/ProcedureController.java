@@ -3,7 +3,7 @@ package info.albertcode.controller;
 import info.albertcode.dao.IProcedureDao;
 import info.albertcode.domain.procedure.Procedure;
 import info.albertcode.utils.exception.CustomException;
-import info.albertcode.utils.json.OneKeyOneValue;
+import info.albertcode.utils.pair.impl.OneKeyOneValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -82,9 +82,9 @@ public class ProcedureController {
         procedureDao.saveProcedure(procedure);
 
         OneKeyOneValue keyValue = new OneKeyOneValue();
-        keyValue.addKeyValue("message", "success");
-        keyValue.addKeyValue("next_url", "/procedure");
-        return keyValue.toJsonObject().toJSONString();
+        keyValue.addValue("message", "success");
+        keyValue.addValue("next_url", "/procedure");
+        return keyValue.toJsonString();
     }
 
     @PutMapping(value = "/edit/{id}")
@@ -100,8 +100,8 @@ public class ProcedureController {
         procedureDao.updateProcedure(procedure);
 
         OneKeyOneValue keyValue = new OneKeyOneValue();
-        keyValue.addKeyValue("message", "success");
-        keyValue.addKeyValue("next_url", "/procedure");
-        return keyValue.toJsonObject().toJSONString();
+        keyValue.addValue("message", "success");
+        keyValue.addValue("next_url", "/procedure");
+        return keyValue.toJsonString();
     }
 }
