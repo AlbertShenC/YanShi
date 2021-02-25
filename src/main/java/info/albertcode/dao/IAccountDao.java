@@ -1,7 +1,6 @@
 package info.albertcode.dao;
 
 import info.albertcode.domain.user.Account;
-import info.albertcode.domain.user.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;

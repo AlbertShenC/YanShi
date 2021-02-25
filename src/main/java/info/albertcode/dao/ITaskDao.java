@@ -83,7 +83,7 @@ public interface ITaskDao {
             @Result(property = "name", column = "name"),
             @Result(property = "id", column = "id")
     })
-    public List<Task> findAllTaskByFuzzyName(String taskName);
+    public List<Task> findAllTaskNameIdPairByFuzzyName(String taskName);
 
     /**
      * 新建一个任务

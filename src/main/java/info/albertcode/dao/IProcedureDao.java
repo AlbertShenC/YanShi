@@ -1,6 +1,7 @@
 package info.albertcode.dao;
 
 import info.albertcode.domain.procedure.Procedure;
+import info.albertcode.domain.task.Task;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.mapping.FetchType;
 import org.springframework.stereotype.Repository;
@@ -37,6 +38,27 @@ public interface IProcedureDao {
             @Result(property = "initTime.minuteInterval", column = "minuteInterval")
     })
     public Procedure findProcedureById(Integer procedureId);
+
+    /**
+     * 获取一个流程，其 名称 为 给定参数procedureName
+     * @return 存在指定流程，则返回该流程，反之返回null
+     */
+    @Select("select id, name, entryTaskId, lastExecuteDateTime, month, day, weekDay, " +
+            "hour, minute, dayInterval, hourInterval, minuteInterval " +
+            "from db_procedure where name = #{procedureName}")
+    @ResultMap(value = "relatedData")
+    public Procedure findProcedureByName(String procedureName);
+
+    /**
+     * 查找多个流程，其名称包含至少一个子字符串与 传入参数procedureName 相同
+     * @return 一个列表，其 size 范围为 [0, 正无穷)
+     */
+    @Select("select name, id from db_procedure where name like #{procedureName}")
+    @Results(value = {
+            @Result(property = "name", column = "name"),
+            @Result(property = "id", column = "id")
+    })
+    public List<Procedure> findAllProcedureNameIdPairByFuzzyName(String procedureName);
 
     /**
      * 获取流程，其 entryTask 的 id 为 给定参数entryTaskId
