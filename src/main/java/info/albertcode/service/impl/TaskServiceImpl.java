@@ -1,10 +1,10 @@
 package info.albertcode.service.impl;
 
-import info.albertcode.dao.IEventDao;
-import info.albertcode.dao.ITaskDao;
+import info.albertcode.dao.encapsulation.CoreDaoEncapsulation;
 import info.albertcode.domain.event.Event;
 import info.albertcode.domain.task.Task;
 import info.albertcode.service.ITaskService;
+import info.albertcode.utils.exception.CustomException;
 import info.albertcode.utils.taskServiceImpl.HttpRequestTaskServiceImpl;
 import info.albertcode.utils.taskServiceImpl.RegisterForWebPageTaskServiceImpl;
 import info.albertcode.utils.taskServiceImpl.RssGenerateTaskServiceImpl;
@@ -18,18 +18,19 @@ import org.springframework.stereotype.Service;
  */
 @Service(value = "taskService")
 public class TaskServiceImpl implements ITaskService {
-    private ITaskDao taskDao;
-    private IEventDao eventDao;
+    private CoreDaoEncapsulation coreDaoEncapsulation;
 
     @Autowired
-    public TaskServiceImpl(ITaskDao taskDao, IEventDao eventDao) {
-        this.taskDao = taskDao;
-        this.eventDao = eventDao;
+    public TaskServiceImpl(CoreDaoEncapsulation coreDaoEncapsulation) {
+        this.coreDaoEncapsulation = coreDaoEncapsulation;
     }
 
     @Override
     public Event executeTask(Integer taskId) throws Exception {
-        Task task = taskDao.findTaskById(taskId);
+        Task task = coreDaoEncapsulation.findTaskById(taskId);
+        if (task == null){
+            throw new CustomException("不存在id为 " + taskId + " 的任务，无法执行");
+        }
 
         switch (task.getTypeEnum()){
             case HttpRequest:
@@ -50,15 +51,8 @@ public class TaskServiceImpl implements ITaskService {
         }
     }
 
-    private Event saveEvent(Task task, Event event){
-        event.setBelongedTaskName(task.getName());
-        if (event.getId() == null){
-            eventDao.saveEvent(event);
-        } else {
-            eventDao.updateEvent(event);
-        }
-        task.setOutputEvent(event);
-        taskDao.updateTask(task);
+    private Event saveEvent(Task task, Event event) throws CustomException {
+        coreDaoEncapsulation.saveOrUpdateEventAndItsTask(event, task);
         return event;
     }
 
@@ -67,17 +61,17 @@ public class TaskServiceImpl implements ITaskService {
         return saveEvent(task, event);
     }
 
-    private Event executeStringParse(Task task) {
+    private Event executeStringParse(Task task) throws CustomException {
         Event event = StringParserTaskServiceImpl.executeStringParser(task);
         return saveEvent(task, event);
     }
 
-    private Event executeRssGenerate(Task task) {
+    private Event executeRssGenerate(Task task) throws CustomException {
         Event event = RssGenerateTaskServiceImpl.executeRssGenerate(task);
         return saveEvent(task, event);
     }
 
-    private Event executeRegisterForWebPage(Task task){
+    private Event executeRegisterForWebPage(Task task) throws CustomException {
         Event event = RegisterForWebPageTaskServiceImpl.executeRegisterForWebPage(task);
         return saveEvent(task, event);
     }

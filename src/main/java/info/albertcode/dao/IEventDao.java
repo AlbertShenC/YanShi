@@ -20,7 +20,7 @@ public interface IEventDao {
      */
     @Select("select id, generatedTime, belongedTaskName, successful, type, " +
             "overview, header, body from db_event where id = #{id}")
-    @Results(id = "relatedData", value = {
+    @Results(id = "eventData", value = {
             @Result(property = "id", column = "id"),
             @Result(property = "generatedTime", column = "generatedTime"),
             @Result(property = "belongedTaskName", column = "belongedTaskName"),
@@ -37,7 +37,7 @@ public interface IEventDao {
      * @return 一个列表，其 size 范围为 [0, totalNum]
      */
     @Select("select * from db_event limit #{startNum}, #{totalNum}")
-    @ResultMap(value = "relatedData")
+    @ResultMap(value = "eventData")
     public List<Event> findEventByColumn(@Param("startNum") Integer startNum, @Param("totalNum") Integer totalNum);
 
     @Insert("insert into db_event " +

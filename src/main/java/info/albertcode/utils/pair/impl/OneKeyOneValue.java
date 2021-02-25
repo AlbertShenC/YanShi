@@ -34,6 +34,10 @@ public class OneKeyOneValue implements IKeyValue {
         return keyValue.keySet();
     }
 
+    public Object getValue(String key){
+        return keyValue.get(key);
+    }
+
     /**
      * 若存在指定键值对，则不作操作，反之将值设置为空字符串插入
      * @param key

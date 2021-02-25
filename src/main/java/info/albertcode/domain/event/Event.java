@@ -19,9 +19,9 @@ public class Event implements Serializable {
     // 那么就需要在展示Event时，同时说明其由哪一个Task所产生
     private boolean successful; // 任务是否成功执行
     private ETaskType typeEnum; // 事件的类型，如http响应，创建时由子类负责
-    private String overview; // 事件的总览，大部分子类需要重写此类
-    private String header; // 事件的头部
-    private String body; // 事件体
+    protected String overview; // 事件的总览，大部分子类需要重写此类
+    protected String header; // 事件的头部
+    protected String body; // 事件体
 
     public Integer getId() {
         return id;

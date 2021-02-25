@@ -107,8 +107,10 @@ public class CoreDaoEncapsulation {
 
     // Procedure 相关的简单储存操作
 
-    public void saveOrUpdateProcedure(Procedure procedure){
-        if (procedure == null || procedure.getId() == null ||
+    public void saveOrUpdateProcedure(Procedure procedure) throws CustomException {
+        if (procedure == null){
+            throw new CustomException("流程为空");
+        } else if (procedure.getId() == null ||
                 procedureDao.findProcedureById(procedure.getId()) == null){
             procedureDao.saveProcedure(procedure);
         } else {
@@ -118,8 +120,10 @@ public class CoreDaoEncapsulation {
 
     // Task 相关的简单储存操作
 
-    public void saveOrUpdateTask(Task task){
-        if (task == null || task.getId() == null ||
+    public void saveOrUpdateTask(Task task) throws CustomException {
+        if (task == null){
+            throw new CustomException("任务为空");
+        } else if (task.getId() == null ||
                 taskDao.findTaskById(task.getId()) == null){
             taskDao.saveTask(task);
         } else {
@@ -129,8 +133,10 @@ public class CoreDaoEncapsulation {
 
     // Request 相关的简单储存操作
 
-    public void saveOrUpdateRequest(Request request){
-        if (request == null || request.getId() == null ||
+    public void saveOrUpdateRequest(Request request) throws CustomException {
+        if (request == null){
+            throw new CustomException("请求为空");
+        } else if (request.getId() == null ||
                 requestDao.findRequestById(request.getId()) == null){
             requestDao.saveRequest(request);
         } else {
@@ -140,8 +146,10 @@ public class CoreDaoEncapsulation {
 
     // Event 相关的简单储存操作
 
-    public void saveOrUpdateEvent(Event event){
-        if (event == null || event.getId() == null ||
+    public void saveOrUpdateEvent(Event event) throws CustomException {
+        if (event == null){
+            throw new CustomException("事件为空");
+        } else if (event.getId() == null ||
                 eventDao.findEventById(event.getId()) == null){
             eventDao.saveEvent(event);
         } else {
@@ -156,7 +164,7 @@ public class CoreDaoEncapsulation {
      * 保存一个流程，并将一个任务设置为其入口任务
      * 流程与任务不要求必须存在于数据库中（即，可以是新建的）
      */
-    public void saveOrUpdateProcedureAndItsEntryTask(Procedure procedure, Task entryTask){
+    public void saveOrUpdateProcedureAndItsEntryTask(Procedure procedure, Task entryTask) throws CustomException {
         saveOrUpdateTask(entryTask);
         procedure.setEntryTask(entryTask);
         saveOrUpdateProcedure(procedure);
@@ -192,7 +200,7 @@ public class CoreDaoEncapsulation {
      * 保存一个任务，及其所对应的请求
      * 任务与请求不要求存在于数据库中（即，可以是新建的）
      */
-    public void saveOrUpdateTaskAndItsRequest(Task task, Request request){
+    public void saveOrUpdateTaskAndItsRequest(Task task, Request request) throws CustomException {
         saveOrUpdateRequest(request);
         task.setRequest(request);
         saveOrUpdateTask(task);
@@ -201,7 +209,7 @@ public class CoreDaoEncapsulation {
     /**
      * 保存一个事件，并修改产生此事件的任务相关内容
      */
-    public void saveOrUpdateEventAndItsTask(Event event, Task task){
+    public void saveOrUpdateEventAndItsTask(Event event, Task task) throws CustomException {
         event.setBelongedTaskName(task.getName());
         saveOrUpdateEvent(event);
         task.setOutputEvent(event);

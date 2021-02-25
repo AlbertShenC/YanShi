@@ -7,7 +7,7 @@ import info.albertcode.domain.event.Event;
 import info.albertcode.domain.event.StringParserEvent;
 import info.albertcode.domain.request.StringParserRequest;
 import info.albertcode.domain.task.Task;
-import info.albertcode.utils.pair.OneKeyManyValues;
+import info.albertcode.utils.pair.impl.OneKeyManyValues;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

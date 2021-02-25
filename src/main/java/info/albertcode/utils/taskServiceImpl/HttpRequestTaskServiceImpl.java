@@ -6,10 +6,13 @@ import info.albertcode.domain.request.HttpRequestRequest;
 import info.albertcode.domain.task.Task;
 import info.albertcode.utils.http.director.Director;
 import info.albertcode.utils.http.domain.HttpRequestAndResponse;
+import info.albertcode.utils.pair.impl.OneKeyOneValue;
 import org.apache.http.NameValuePair;
 
 import java.net.URISyntaxException;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @Description:
@@ -26,20 +29,20 @@ public class HttpRequestTaskServiceImpl {
         Director director = new Director(request.getMethod())
                 .uri(request.getUrl());
 
-        String[] headers = request.getHeader().split("&");
-        for (String header : headers){
-            String[] nameAndValue = header.split("=");
-            if (nameAndValue.length == 2){
-                director.header(nameAndValue[0], nameAndValue[1]);
-            }
+        OneKeyOneValue headers = new OneKeyOneValue(request.getHeader());
+        Iterator<String> iteratorHeader = headers.getAllKeys().iterator();
+        while (iteratorHeader.hasNext()) {
+            String key = iteratorHeader.next();
+            String value = (String) headers.getValue(key);
+            director.header(key, value);
         }
 
-        String[] parameters = request.getBody().split("&");
-        for (String parameter : parameters){
-            String[] nameAndValue = parameter.split("=");
-            if (nameAndValue.length == 2){
-                director.parameter(nameAndValue[0], nameAndValue[1]);
-            }
+        OneKeyOneValue parameters = new OneKeyOneValue(request.getBody());
+        Iterator<String> iteratorParameter = parameters.getAllKeys().iterator();
+        while (iteratorParameter.hasNext()){
+            String key = iteratorHeader.next();
+            String value = (String) headers.getValue(key);
+            director.parameter(key, value);
         }
 
         return director.build();
@@ -55,13 +58,12 @@ public class HttpRequestTaskServiceImpl {
         event.setStatusCode(requestAndResponse.getResponseStatus());
         event.setReasonPhrase(requestAndResponse.getResponseReasonPhrase());
 
-        String resultHeaders = "";
+        OneKeyOneValue resultHeaders = new OneKeyOneValue();
         List<NameValuePair> responseHeaders = requestAndResponse.getResponseHeaders();
         for (NameValuePair responseHeader : responseHeaders){
-            resultHeaders = resultHeaders + responseHeader.getName() + "=" +
-                    responseHeader.getValue() + "&";
+            resultHeaders.addValue(responseHeader.getName(), responseHeader.getValue());
         }
-        event.setHeader(resultHeaders.substring(0, resultHeaders.length() - 1));
+        event.setHeader(resultHeaders.toJsonString());
 
         event.setBody(requestAndResponse.getResponseEntity());
         return event;

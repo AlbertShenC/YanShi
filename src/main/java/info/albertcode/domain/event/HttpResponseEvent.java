@@ -1,5 +1,8 @@
 package info.albertcode.domain.event;
 
+import info.albertcode.utils.enums.ETaskType;
+import info.albertcode.utils.pair.impl.OneKeyOneValue;
+
 import java.util.Date;
 
 /**
@@ -8,54 +11,55 @@ import java.util.Date;
  */
 
 public class HttpResponseEvent extends Event{
-    private String httpVersion; // 服务器返回的 http 协议版本，如 HTTP/1.1
-    private String statusCode; // 服务器返回的响应状态码 200
-    private String reasonPhrase; // 服务器返回的状态代码的描述 OK
+    // 包括
+    // 响应协议版本（httpVersion），如 HTTP/1.1
+    // 响应状态码（statusCode），如 200
+    // 响应状态码描述（reasonPhrase），如 OK
+    // 三部分
+    private OneKeyOneValue keyValueOverview;
 
     public HttpResponseEvent() {
         this.setGeneratedTime(new Date());
+        this.setTypeEnum(ETaskType.HttpRequest);
+        keyValueOverview = new OneKeyOneValue();
     }
 
     public String getHttpVersion() {
-        return httpVersion;
+        return (String) keyValueOverview.getValue("httpVersion");
     }
 
     public void setHttpVersion(String httpVersion) {
-        this.httpVersion = httpVersion;
-        this.setOverview(this.httpVersion + " " + this.statusCode
-                + " " + this.reasonPhrase);
+        keyValueOverview.addValue("httpVersion", httpVersion);
+        this.overview = keyValueOverview.toJsonString();
     }
 
     public String getStatusCode() {
-        return statusCode;
+        return (String) keyValueOverview.getValue("statusCode");
     }
 
     public void setStatusCode(String statusCode) {
-        this.statusCode = statusCode;
-        this.setOverview(this.httpVersion + " " + this.statusCode
-                + " " + this.reasonPhrase);
+        keyValueOverview.addValue("statusCode", statusCode);
+        this.overview = keyValueOverview.toJsonString();
     }
 
     public String getReasonPhrase() {
-        return reasonPhrase;
+        return (String) keyValueOverview.getValue("reasonPhrase");
     }
 
     public void setReasonPhrase(String reasonPhrase) {
-        this.reasonPhrase = reasonPhrase;
-        this.setOverview(this.httpVersion + " " + this.statusCode
-                + " " + this.reasonPhrase);
+        keyValueOverview.addValue("reasonPhrase", reasonPhrase);
+        this.overview = keyValueOverview.toJsonString();
     }
 
     public void setOverview(String httpVersion, String statusCode, String reasonPhrase){
-        this.httpVersion = httpVersion;
-        this.statusCode = statusCode;
-        this.reasonPhrase = reasonPhrase;
-        this.setOverview(this.httpVersion + " " + this.statusCode
-                + " " + this.reasonPhrase);
+        keyValueOverview.addValue("httpVersion", httpVersion);
+        keyValueOverview.addValue("statusCode", statusCode);
+        keyValueOverview.addValue("reasonPhrase", reasonPhrase);
+        this.overview = keyValueOverview.toJsonString();
     }
 
     public void setOverview(String overview){
-        String[] values = overview.split(" ");
-        this.setOverview(values[0], values[1], values[2]);
+        keyValueOverview = new OneKeyOneValue(overview);
+        this.overview = keyValueOverview.toJsonString();
     }
 }

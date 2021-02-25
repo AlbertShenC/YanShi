@@ -16,7 +16,7 @@ public interface IRequestDao {
      */
     @Select("select id, overview, header, body from db_request " +
             "where id = #{requestId}")
-    @Results(id = "relatedData", value = {
+    @Results(id = "requestData", value = {
             @Result(property = "id", column = "id"),
             @Result(property = "overview", column = "overview"),
             @Result(property = "header", column = "header"),

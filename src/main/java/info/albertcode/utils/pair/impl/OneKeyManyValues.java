@@ -1,8 +1,9 @@
-package info.albertcode.utils.pair;
+package info.albertcode.utils.pair.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import info.albertcode.utils.pair.IKeyValue;
 
 import java.util.*;
 
@@ -11,7 +12,7 @@ import java.util.*;
  * @Author: Albert Shen
  */
 
-public class OneKeyManyValues implements IKeyValue{
+public class OneKeyManyValues implements IKeyValue {
     private List<String> keys;
     private List<List<Object>> valuesArray;
     private Integer numberOfKeys;

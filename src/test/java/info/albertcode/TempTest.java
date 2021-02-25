@@ -1,8 +1,7 @@
 package info.albertcode;
 
 import info.albertcode.utils.pair.IKeyValue;
-import info.albertcode.utils.pair.OneKeyManyValues;
-import info.albertcode.utils.pair.impl.OneKeyOneValue;
+import info.albertcode.utils.pair.impl.OneKeyManyValues;
 
 /**
  * @Description:

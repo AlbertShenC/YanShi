@@ -9,9 +9,9 @@ import java.io.Serializable;
 
 public class Request implements Serializable {
     private Integer id;
-    private String overview; // 事件的总览，大部分子类需要重写此类
-    private String header; // 事件的头部
-    private String body; // 事件体
+    protected String overview; // 事件的总览，大部分子类需要重写此类
+    protected String header; // 事件的头部
+    protected String body; // 事件体
 
     public Integer getId() {
         return id;

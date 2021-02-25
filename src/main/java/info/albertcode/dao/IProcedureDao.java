@@ -21,7 +21,7 @@ public interface IProcedureDao {
     @Select("select id, name, entryTaskId, lastExecuteDateTime, month, day, weekDay, " +
             "hour, minute, dayInterval, hourInterval, minuteInterval " +
             "from db_procedure where id = #{procedureId}")
-    @Results(id = "relatedDate", value = {
+    @Results(id = "procedureData", value = {
             @Result(property = "id", column = "id"),
             @Result(property = "name", column = "name"),
             @Result(property = "entryTask", column = "entryTaskId",
@@ -46,7 +46,7 @@ public interface IProcedureDao {
     @Select("select id, name, entryTaskId, lastExecuteDateTime, month, day, weekDay, " +
             "hour, minute, dayInterval, hourInterval, minuteInterval " +
             "from db_procedure where name = #{procedureName}")
-    @ResultMap(value = "relatedData")
+    @ResultMap(value = "procedureData")
     public Procedure findProcedureByName(String procedureName);
 
     /**
@@ -67,7 +67,7 @@ public interface IProcedureDao {
     @Select("select id, name, entryTaskId, lastExecuteDateTime, month, day, weekDay, " +
             "hour, minute, dayInterval, hourInterval, minuteInterval " +
             "from db_procedure where entryTaskId = #{entryTaskId}")
-    @ResultMap(value = "relatedDate")
+    @ResultMap(value = "procedureData")
     public Procedure findProcedureWithEntryTask(Integer entryTaskId);
 
     /**
@@ -75,7 +75,7 @@ public interface IProcedureDao {
      * @return 一个列表，其 size 范围为 [0, totalNum]
      */
     @Select("select * from db_procedure limit #{startNum}, #{totalNum}")
-    @ResultMap(value = "relatedDate")
+    @ResultMap(value = "procedureData")
     public List<Procedure> findProcedureByColumn(@Param("startNum") Integer startNum, @Param("totalNum") Integer totalNum);
 
     /**

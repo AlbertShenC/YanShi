@@ -36,7 +36,7 @@ public interface ITaskDao {
      */
     @Select("select id, type, name, requestId, inputTaskId, inputEventProperty, " +
             "outputEventId from db_task where id = #{taskId}")
-    @Results(id = "relatedData", value = {
+    @Results(id = "taskData", value = {
             @Result(property = "id", column = "id"),
             @Result(property = "type", column = "type"),
             @Result(property = "name", column = "name"),
@@ -62,7 +62,7 @@ public interface ITaskDao {
      */
     @Select("select id, type, name, requestId, inputTaskId, inputEventProperty, " +
             "outputEventId from db_task where name = #{taskName}")
-    @ResultMap(value = "relatedData")
+    @ResultMap(value = "taskData")
     public Task findTaskByName(String taskName);
 
     /**
@@ -71,7 +71,7 @@ public interface ITaskDao {
      */
     @Select("select id, type, name, requestId, inputTaskId, inputEventProperty, " +
             "outputEventId from db_task where inputTaskId = #{taskId}")
-    @ResultMap(value = "relatedData")
+    @ResultMap(value = "taskData")
     public List<Task> findSucceedingTasksOfSpecificTaskById(Integer taskId);
 
     /**
