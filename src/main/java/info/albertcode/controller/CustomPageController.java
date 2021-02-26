@@ -29,7 +29,7 @@ public class CustomPageController {
             return "error";
         }
         switch (event.getTypeEnum()){
-            case RssGenerate:
+            case RegisterForWebPage:
                 return event.getBody();
             default:
                 return "error";

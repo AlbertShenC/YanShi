@@ -1,24 +1,23 @@
 package info.albertcode.domain.request;
 
+import info.albertcode.utils.pair.OneKeyOneValue;
+
 /**
  * @Description:
  * overview：暂空
- * header：储存映射信息，使用 & 连接，并按照 titleAlias author text url的顺序，分别记录其别名
- *         如：BiaoTi&ZuoZhe&ZhengWen&LianJie
- * body：储存channel的基本信息，使用 & 连接，并按照 title url description 的顺序记录其指
- *       如：我的网站首页&https://albertcode.info&一些乱七八糟的东西
+ *
+ * header：储存channel的基本信息，包括 title url description，采用json储存，如
+ * {"title":"channel标题","url":"channel链接","description":"channel说明"}
+ *
+ * body：储存映射信息，包括 titleAlias authorAlias textAlias urlAlias，如：
+ * {"titleAlias":"name","authorAlias":"author","textAlias":"text","urlAlias":"link"}
+ *
  * @Author: Albert Shen
  */
 
 public class RssGenerateRequest extends Request{
-    private String titleAlias;
-    private String authorAlias;
-    private String textAlias;
-    private String urlAlias;
-
-    private String channelTitle;
-    private String channelUrl;
-    private String channelDescription;
+    private OneKeyOneValue keyValueHeader;
+    private OneKeyOneValue keyValueBody;
 
     public RssGenerateRequest(Request request){
         this.setId(request.getId());
@@ -28,102 +27,107 @@ public class RssGenerateRequest extends Request{
     }
 
     public String getTitleAlias() {
-        return titleAlias;
+        return (String) keyValueBody.getValue("titleAlias");
     }
 
     public void setTitleAlias(String titleAlias) {
-        this.titleAlias = titleAlias;
-        this.setHeader(this.titleAlias + "&" + this.authorAlias + "&"
-                + this.textAlias + "&" + this.urlAlias);
+        keyValueBody.addValue("titleAlias", titleAlias);
+        this.body = keyValueBody.toJsonString();
     }
 
     public String getAuthorAlias() {
-        return authorAlias;
+        return (String) keyValueBody.getValue("authorAlias");
     }
 
     public void setAuthorAlias(String authorAlias) {
-        this.authorAlias = authorAlias;
-        this.setHeader(this.titleAlias + "&" + this.authorAlias + "&"
-                + this.textAlias + "&" + this.urlAlias);
+        keyValueBody.addValue("authorAlias", authorAlias);
+        this.body = keyValueBody.toJsonString();
     }
 
     public String getTextAlias() {
-        return textAlias;
+        return (String) keyValueBody.getValue("textAlias");
     }
 
     public void setTextAlias(String textAlias) {
-        this.textAlias = textAlias;
-        this.setHeader(this.titleAlias + "&" + this.authorAlias + "&"
-                + this.textAlias + "&" + this.urlAlias);
+        keyValueBody.addValue("textAlias", textAlias);
+        this.body = keyValueBody.toJsonString();
     }
 
     public String getUrlAlias() {
-        return urlAlias;
+        return (String) keyValueBody.getValue("urlAlias");
     }
 
     public void setUrlAlias(String urlAlias) {
-        this.urlAlias = urlAlias;
-        this.setHeader(this.titleAlias + "&" + this.authorAlias + "&"
-                + this.textAlias + "&" + this.urlAlias);
+        keyValueBody.addValue("urlAlias", urlAlias);
+        this.body = keyValueBody.toJsonString();
     }
 
-    public void setHeader(String titleAlias, String authorAlias,
+    public void setBody(String titleAlias, String authorAlias,
                           String textAlias, String urlAlias){
-        this.titleAlias = titleAlias;
-        this.authorAlias = authorAlias;
-        this.textAlias = textAlias;
-        this.urlAlias = urlAlias;
-        this.setHeader(this.titleAlias + "&" + this.authorAlias + "&"
-                + this.textAlias + "&" + this.urlAlias);
+        keyValueBody.addValue("titleAlias", titleAlias);
+        keyValueBody.addValue("authorAlias", authorAlias);
+        keyValueBody.addValue("textAlias", textAlias);
+        keyValueBody.addValue("urlAlias", urlAlias);
+        this.body = keyValueBody.toJsonString();
     }
 
     @Override
-    public void setHeader(String header){
-        String[] values = header.split("&");
-        this.setHeader(values[0], values[1], values[2], values[3]);
+    public void setBody(String jsonString){
+        keyValueBody = new OneKeyOneValue(jsonString);
+        this.body = keyValueBody.toJsonString();
+    }
+
+    public void setBody(OneKeyOneValue keyValueBody){
+        this.keyValueBody = keyValueBody;
+        this.body = keyValueBody.toJsonString();
     }
 
     public String getChannelTitle() {
-        return channelTitle;
+        return (String) keyValueHeader.getValue("channelTitle");
     }
 
     public void setChannelTitle(String channelTitle) {
-        this.channelTitle = channelTitle;
-        this.setBody(this.channelTitle + "&" + this.channelUrl + "&"
-                + this.channelDescription);
+        keyValueHeader.addValue("channelTitle", channelTitle);
+        this.header = keyValueHeader.toJsonString();
     }
 
     public String getChannelUrl() {
-        return channelUrl;
+        return (String) keyValueHeader.getValue("channelUrl");
     }
 
     public void setChannelUrl(String channelUrl) {
-        this.channelUrl = channelUrl;
-        this.setBody(this.channelTitle + "&" + this.channelUrl + "&"
-                + this.channelDescription);
+        keyValueHeader.addValue("channelUrl", channelUrl);
+        this.header = keyValueHeader.toJsonString();
     }
 
     public String getChannelDescription() {
-        return channelDescription;
+        return (String) keyValueHeader.getValue("channelDescription");
     }
 
     public void setChannelDescription(String channelDescription) {
-        this.channelDescription = channelDescription;
-        this.setBody(this.channelTitle + "&" + this.channelUrl + "&"
-                + this.channelDescription);
+        keyValueHeader.addValue("channelDescription", channelDescription);
+        this.header = keyValueHeader.toJsonString();
     }
 
-    public void setBody(String channelTitle, String channelUrl, String channelDescription){
-        this.channelTitle = channelTitle;
-        this.channelUrl = channelUrl;
-        this.channelDescription = channelDescription;
-        this.setBody(this.channelTitle + "&" + this.channelUrl + "&"
-                + this.channelDescription);
+    public OneKeyOneValue getKeyValueBody() {
+        return keyValueHeader;
+    }
+
+    public void setHeader(String channelTitle, String channelUrl, String channelDescription){
+        keyValueHeader.addValue("channelTitle", channelTitle);
+        keyValueHeader.addValue("channelUrl", channelUrl);
+        keyValueHeader.addValue("channelDescription", channelDescription);
+        this.header = keyValueHeader.toJsonString();
     }
 
     @Override
-    public void setBody(String body){
-        String[] values = body.split("&");
-        setBody(values[0], values[1], values[2]);
+    public void setHeader(String jsonString){
+        keyValueHeader = new OneKeyOneValue(jsonString);
+        this.header = keyValueHeader.toJsonString();
+    }
+
+    public void setHeader(OneKeyOneValue keyValueBody){
+        this.keyValueHeader = keyValueBody;
+        this.header = keyValueHeader.toJsonString();
     }
 }
