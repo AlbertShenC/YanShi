@@ -74,10 +74,16 @@ public class OneKeyManyValues {
         return keyValues.keySet().iterator();
     }
 
+    /**
+     * @return 视图一形式的迭代器
+     */
     public Iterator<Map.Entry<String, List<Object>>> getIteratorByKey() {
         return keyValues.entrySet().iterator();
     }
 
+    /**
+     * @return 视图二形式的迭代器
+     */
     public Iterator<LinkedHashMap<String, Object>> getIteratorByGroup() {
         LinkedList<LinkedHashMap<String, Object>> list = new LinkedList<>();
         Iterator<Map.Entry<String, List<Object>>> iterator = this.getIteratorByKey();
@@ -122,6 +128,9 @@ public class OneKeyManyValues {
         keyValues.clear();
     }
 
+    /**
+     * @return 视图一形式的json字符串
+     */
     public String toJsonStringByKey() {
         Iterator<Map.Entry<String, List<Object>>> iterator = this.getIteratorByKey();
         JSONArray jsonArray = new JSONArray();
@@ -139,10 +148,7 @@ public class OneKeyManyValues {
     }
 
     /**
-     * 一个key可能对应多个value，此种转换方式，将整体分为多个数组，
-     * 数组数量与maxNumberOfValues相同，一个数组中，不会存在相同的key，
-     * 且key会尽量靠前，如：
-     * @return
+     * @return 视图二形式的json字符串
      */
     public String toJsonStringByGroup() {
         JSONArray jsonArray = new JSONArray();

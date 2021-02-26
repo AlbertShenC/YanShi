@@ -18,7 +18,7 @@ import java.util.List;
  * @Author: Albert Shen
  */
 
-public class HttpRequestTaskServiceImpl {
+public class HttpRequestTaskServiceImpl extends TaskWithInputEvent{
 
     private static HttpRequestRequest prepareRequest(Task task){
         return new HttpRequestRequest(task.getRequest());
