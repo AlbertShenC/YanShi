@@ -3,8 +3,7 @@ package info.albertcode.domain.request;
 import info.albertcode.utils.pair.OneKeyManyValues;
 
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.LinkedHashMap;
 
 /**
  * @Description: 解析指定事件
@@ -48,7 +47,7 @@ public class StringParserRequest extends Request{
         keyValuesBody = new OneKeyManyValues(jsonArrayString);
     }
 
-    public Iterator<Map.Entry<String, List<Object>>> getBodyIterator() {
-        return keyValuesBody.getIteratorByKey();
+    public Iterator<LinkedHashMap<String, Object>> getBodyIterator() {
+        return keyValuesBody.getIteratorByGroup();
     }
 }

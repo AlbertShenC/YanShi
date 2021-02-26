@@ -1,10 +1,8 @@
 package info.albertcode.domain.event;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import info.albertcode.utils.enums.ETaskType;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * @Description: 字符串处理结果储存于body中
@@ -13,6 +11,7 @@ import java.util.List;
 
 public class StringParserEvent extends Event{
     public StringParserEvent(String body){
+        this.setTypeEnum(ETaskType.StringParser);
         this.setGeneratedTime(new Date());
         this.setBody(body);
     }

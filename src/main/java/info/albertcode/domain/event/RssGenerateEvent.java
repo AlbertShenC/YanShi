@@ -1,5 +1,7 @@
 package info.albertcode.domain.event;
 
+import info.albertcode.utils.enums.ETaskType;
+
 import java.util.Date;
 
 /**
@@ -9,6 +11,7 @@ import java.util.Date;
 
 public class RssGenerateEvent extends Event{
     public RssGenerateEvent(String body) {
+        this.setTypeEnum(ETaskType.RssGenerate);
         this.setGeneratedTime(new Date());
         this.setBody(body);
     }

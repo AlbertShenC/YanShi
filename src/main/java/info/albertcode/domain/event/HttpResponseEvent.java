@@ -22,8 +22,8 @@ public class HttpResponseEvent extends Event{
     // body 部分无需重写
 
     public HttpResponseEvent() {
-        this.setGeneratedTime(new Date());
         this.setTypeEnum(ETaskType.HttpRequest);
+        this.setGeneratedTime(new Date());
         keyValueOverview = new OneKeyOneValue();
         keyValueHeader = new OneKeyOneValue();
     }

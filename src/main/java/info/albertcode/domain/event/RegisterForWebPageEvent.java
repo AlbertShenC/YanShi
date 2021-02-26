@@ -1,5 +1,7 @@
 package info.albertcode.domain.event;
 
+import info.albertcode.utils.enums.ETaskType;
+
 import java.util.Date;
 
 /**
@@ -15,6 +17,7 @@ import java.util.Date;
 
 public class RegisterForWebPageEvent extends Event{
     public RegisterForWebPageEvent(String body) {
+        this.setTypeEnum(ETaskType.RegisterForWebPage);
         this.setGeneratedTime(new Date());
         this.setBody(body);
     }
