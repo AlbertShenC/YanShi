@@ -35,8 +35,8 @@ public class YanShiCoreController {
             return;
         } else {
             this.isInitialized = true;
-//            timer.execute();
-//            this.execute();
+            timer.execute();
+            this.execute();
         }
     }
 

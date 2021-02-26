@@ -47,7 +47,7 @@ public class HttpRequestTaskServiceImpl {
         OneKeyOneValue parameters = new OneKeyOneValue(request.getBody());
         Iterator<String> iteratorParameter = parameters.getKeyIterator();
         while (iteratorParameter.hasNext()){
-            String key = iteratorHeader.next();
+            String key = iteratorParameter.next();
             String value = (String) headers.getValue(key);
             director.parameter(key, value);
         }
